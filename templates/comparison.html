@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📈 Comparison | Student Analyzer</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/comparison.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="/static/css/navbar.css">
+<link rel="stylesheet" href="/static/js/navbar.js">
+<link rel="stylesheet" href="/static/css/footer.css">
+</head>
+<body>
+  <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="/templates/dashboard-1.html">Student Analyzer</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/templates/dashboard-1.html">🏠 Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="student-profile.html">👩‍🎓 Student Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="subject-analysis.html">📘 Subject Analysis</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">📈 Comparison</a></li>
+                    <li class="nav-item"><a class="nav-link" href="prediction.html">🧮 Prediction</a></li>
+                    <li class="nav-item"><a class="nav-link" href="reports.html">📊 Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="teacher-insights.html">🧑‍🏫 Teacher Insights</a></li>
+                    <li class="nav-item"><a class="nav-link" href="trends.html">🗓️ Trend</a></li>
+                </ul>
+        </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2 class="fw-bold text-primary mb-4">📈 Comparison of Students</h2>
+
+        <!-- Student Selection Form -->
+        <div class="card shadow-sm mb-4 p-3">
+        <h5 class="text-secondary mb-3">➕ Select Students to Compare</h5>
+        <form id="compareForm" class="row g-3">
+            <div class="col-md-4">
+            <input type="text" class="form-control" id="studentName" placeholder="Student Name" required>
+            </div>
+            <div class="col-12">
+            <button type="submit" class="btn btn-primary">Add Student</button>
+            </div>
+        </form>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="card shadow-sm mb-4 p-3">
+        <h5 class="text-secondary mb-3">📋 Scores Comparison Table</h5>
+        <table class="table table-striped table-hover">
+            <thead class="table-primary">
+            <tr>
+                <th>Student Name</th>
+                <th>Professional Life</th>
+                <th>General English</th>
+                <th>English for IT</th>
+                <th>Web Design</th>
+                <th>Algorithm</th>
+                <th>ESD</th>
+                <th>Average</th>
+            </tr>
+            </thead>
+            <tbody id="comparisonTableBody"></tbody>
+        </table>
+        </div>
+
+        <!-- Comparison Charts -->
+        <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm p-3">
+            <h5 class="text-primary mb-3">📊 Students' Scores per Subject</h5>
+            <canvas id="barChart" height="300"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm p-3">
+            <h5 class="text-success mb-3">📈 Students' Radar Comparison</h5>
+            <canvas id="radarChart" height="300"></canvas>
+            </div>
+        </div>
+        </div>
+    </div>
+    <footer>
+        <p>© 2025 Student Analyzer. All Rights Reserved.</p>
+        <p>
+            <a href="index.html">Home</a> | 
+            <a href="reports.html">Reports</a> | 
+            <a href="contact.html">Contact</a>
+        </p>
+        <p class="social-icons">
+            <a href="#" title="Facebook">📘</a>
+            <a href="#" title="Twitter">🐦</a>
+            <a href="#" title="LinkedIn">💼</a>
+        </p>
+        <p>Made with ❤️ by the Student Analyzer Team</p>
+    </footer>
+    <script src="/static/js/comparison.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

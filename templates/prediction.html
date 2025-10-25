@@ -1,0 +1,525 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Analyzer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Reports | Student Analyzer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/reports.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/static/css/navbar.css">
+    <link rel="stylesheet" href="/static/js/navbar.js">
+    <link rel="stylesheet" href="/static/css/footer.css">
+</head>
+<style>
+    /* 1. Global & Typography */
+    h1 {
+        text-align: center;
+        color: #1e3c72; /* Deep Blue Header */
+        margin-bottom: 30px;
+    }
+
+    /* Message Box for Errors/Validation (Non-blocking alerts) */
+    #messageBox {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #f8d7da;
+        color: #842029;
+        padding: 15px 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.5s, top 0.5s;
+        font-weight: 600;
+        max-width: 90%;
+        text-align: center;
+    }
+    #messageBox.show {
+        opacity: 1;
+        top: 30px;
+    }
+
+    /* 2. Container & Layout */
+    .container {
+        max-width: 1100px;
+        margin: auto;
+        background: #ffffff;
+        padding: 30px 40px;
+        border-radius: 16px; /* Slightly softer corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* More refined shadow */
+    }
+    form {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px; /* Increased gap for better spacing */
+        margin-bottom: 40px;
+        padding: 20px;
+        border: 1px solid #e0e6ed; /* Subtle border for form area */
+        border-radius: 10px;
+    }
+    form h2 {
+        grid-column: 1 / -1;
+        margin: 10px 0 5px;
+        color: #2a6f8a; /* Accent Teal for section headers */
+        border-bottom: 2px solid #e0e6ed;
+        padding-bottom: 5px;
+        font-weight: 600;
+        font-size: 1.2em;
+    }
+
+    /* 3. Form Elements */
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+    label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #555;
+        font-size: 0.95em;
+    }
+    input[type="text"], input[type="number"] {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #c7d0d9;
+        font-size: 15px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    input[type="text"]:focus, input[type="number"]:focus {
+        border-color: #2a6f8a;
+        box-shadow: 0 0 0 3px rgba(42, 111, 138, 0.2); /* Focus ring */
+        outline: none;
+    }
+    button {
+        grid-column: 1 / -1;
+        padding: 15px 20px; /* Larger click area */
+        background: #1e3c72; /* Primary Action Blue */
+        color: #fff;
+        border: none;
+        font-size: 17px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.1s;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-top: 10px;
+    }
+    button:hover {
+        background: #2a6f8a; /* Teal on hover */
+    }
+    button:active {
+        transform: scale(0.99);
+    }
+
+    /* 4. Table Styling */
+    table {
+        width: 100%;
+        border-collapse: separate; /* Use 'separate' for better border-radius on table */
+        border-spacing: 0;
+        margin-top: 30px;
+        font-size: 14px;
+        border: 1px solid #e0e6ed;
+        border-radius: 10px;
+        overflow: hidden; /* Important for border-radius on table to work */
+    }
+    th, td {
+        padding: 12px 15px;
+        text-align: left; /* Aligned left for better readability in columns */
+        border-bottom: 1px solid #e0e6ed;
+    }
+    th {
+        background: #1e3c72;
+        color: #fff;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.85em;
+        letter-spacing: 0.5px;
+    }
+    /* Zebra-striping for readability */
+    tbody tr:nth-child(even) {
+        background-color: #f9fbfd; 
+    }
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* Summary Row Styling */
+    tr.summary-row td {
+        background-color: #e6f7ff !important; /* Light blue background for summary */
+        font-size: 1.05em;
+        vertical-align: top;
+    }
+    tr.summary-row td:not(:last-child) {
+        border-right: 1px solid #c7d0d9;
+    }
+    tr.summary-row td {
+        border-top: 2px solid #1e3c72;
+    }
+    
+    /* 5. Comment Classes (More expressive colors) */
+    .good { color: #0f5132; font-weight: 600; background-color: #d1e7dd; padding: 3px 6px; border-radius: 4px; } /* Darker green, light background */
+    .needs { color: #842029; font-weight: 600; background-color: #f8d7da; padding: 3px 6px; border-radius: 4px; } /* Darker red, light background */
+    .same { color: #664d03; font-weight: 600; background-color: #fff3cd; padding: 3px 6px; border-radius: 4px; } /* Darker yellow/orange, light background */
+    .new-subject { color: #0a58ca; font-weight: 600; background-color: #cfe2ff; padding: 3px 6px; border-radius: 4px; } /* Darker blue, light background */
+    
+    .summary-text { font-size: 0.9em; margin-top: 8px; }
+
+    /* 6. Media Query for Mobile (Fully Responsive) */
+    @media(max-width: 768px){
+        .container { padding: 20px; }
+        form { grid-template-columns: 1fr; gap: 15px; }
+        th, td { padding: 10px; font-size: 12px; }
+        /* Summary row needs adjustment on mobile */
+        .summary-row td {
+            display: block;
+            width: 100%;
+            border-right: none !important;
+            border-bottom: 1px solid #c7d0d9;
+        }
+    }
+</style>
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="index.html">Student Analyzer</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="/templates/dashboard-1.html">🏠 Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="student-profile.html">👩‍🎓 Student Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="subject-analysis.html">📘 Subject Analysis</a></li>
+                    <li class="nav-item"><a class="nav-link" href="comparison.html">📈 Comparison</a></li>
+                    <li class="nav-item"><a class="nav-link" href="prediction.html">🧮 Prediction</a></li>
+                    <li class="nav-item"><a class="nav-link" href="reports.html">📊 Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="teacher-insights.html">🧑‍🏫 Teacher Insights</a></li>
+                    <li class="nav-item"><a class="nav-link" href="trends.html">🗓️ Trend</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div id="messageBox"></div>
+    <div class="container">
+        <h1>Student Performance Analyzer 📊</h1>
+        
+        <form id="scoreForm">
+            <div class="form-group">
+                <label for="studentName">Student Name</label>
+                <input type="text" id="studentName" placeholder="e.g., Jane Doe" required>
+            </div>
+            <div class="form-group">
+                <label for="studentID">Student ID</label>
+                <input type="text" id="studentID" placeholder="e.g., C2025001">
+            </div>
+
+            <h2>Term 1 Scores (Max 100)</h2>
+            <div class="form-group"><label for="BCU">BCU</label><input type="number" id="BCU" min="0" max="100" placeholder="Score"></div>
+            <div class="form-group"><label for="EngIT_T1">English for IT</label><input type="number" id="EngIT_T1" min="0" max="100" placeholder="Score"></div>
+            <div class="form-group"><label for="GenEng_T1">General English</label><input type="number" id="GenEng_T1" min="0" max="100" placeholder="Score"></div>
+            <div class="form-group"><label for="Logic">Logic</label><input type="number" id="Logic" min="0" max="100" placeholder="Score"></div>
+            <div class="form-group"><label for="PL_T1">PL</label><input type="number" id="PL_T1" min="0" max="100" placeholder="Score"></div>
+            <div class="form-group"><label for="Design">Design</label><input type="number" id="Design" min="0" max="100" placeholder="Score"></div>
+
+            <h2>Term 2 Scores (Max 100) </h2>
+            <div class="form-group"><label for="EngIT_T2">English for IT</label><input type="number" id="EngIT_T2" min="0" max="100" placeholder="Score"></div>
+            <div class="form-group"><label for="GenEng_T2">General English</label><input type="number" id="GenEng_T2" min="0" max="100" placeholder="Score"></div>
+            <div class="form-group"><label for="Algorithm">Algorithm</label><input type="number" id="Algorithm" min="0" max="100" placeholder="Score"></div>
+            <div class="form-group"><label for="PL_T2">PL</label><input type="number" id="PL_T2" min="0" max="100" placeholder="Score"></div>
+            <div class="form-group"><label for="WebDesign">Web Design</label><input type="number" id="WebDesign" min="0" max="100" placeholder="Score"></div>
+
+            <button type="button" onclick="addStudent()">➕ Add Student & Analyze Performance</button>
+        </form>
+
+        <h2>Performance Comparison Table</h2>
+        <table id="resultTable">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>ID</th>
+                    <th>Subject</th>
+                    <th style="text-align: center;">Term 1 Score</th>
+                    <th style="text-align: center;">Term 2 Score</th>
+                    <th>Analysis</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+    </div>
+    <footer>
+        <p>© 2025 Student Analyzer. All Rights Reserved.</p>
+        <p>
+            <a href="index.html">Home</a> | 
+            <a href="reports.html">Reports</a> | 
+            <a href="contact.html">Contact</a>
+        </p>
+        <p class="social-icons">
+            <a href="#" title="Facebook">📘</a>
+            <a href="#" title="Twitter">🐦</a>
+            <a href="#" title="LinkedIn">💼</a>
+        </p>
+        <p>Made with ❤️ by the Student Analyzer Team</p>
+    </footer>
+
+    <script>
+        const students = [];
+
+        // Helper function to show non-blocking messages instead of alert()
+        function showMessage(msg) {
+            const box = document.getElementById('messageBox');
+            // Check if the message indicates an error or success to adjust background color
+            if (msg.includes("🛑") || msg.includes("⚠️")) {
+                box.style.backgroundColor = '#f8d7da'; // Red
+                box.style.color = '#842029';
+            } else {
+                box.style.backgroundColor = '#d1e7dd'; // Greenish
+                box.style.color = '#0f5132';
+            }
+            
+            box.textContent = msg;
+            box.classList.add('show');
+            setTimeout(() => {
+                box.classList.remove('show');
+            }, 3000);
+        }
+
+        function addStudent() {
+            const name = document.getElementById("studentName").value.trim();
+            const id = document.getElementById("studentID").value.trim();
+
+            if (!name) { 
+                showMessage("🛑 Please enter the student's name."); 
+                return; 
+            }
+
+            const subjects = [
+                { name: "BCU", t1: "BCU", t2: null },
+                { name: "English for IT", t1: "EngIT_T1", t2: "EngIT_T2" },
+                { name: "General English", t1: "GenEng_T1", t2: "GenEng_T2" },
+                { name: "Logic", t1: "Logic", t2: null },
+                { name: "PL", t1: "PL_T1", t2: "PL_T2" },
+                { name: "Design", t1: "Design", t2: null },
+                { name: "Algorithm", t1: null, t2: "Algorithm" },
+                { name: "Web Design", t1: null, t2: "WebDesign" }
+            ];
+
+            const studentData = { 
+                name, 
+                id, 
+                subjects: [],
+                overallTotal: 0,
+                overallCount: 0,
+                t1Total: 0,
+                t1Count: 0,
+                t2Total: 0,
+                t2Count: 0,
+                lowestScore: 101, // Lowest possible score is 0, so 101 is a safe starting point
+                lowestSubject: "N/A"
+            };
+
+            subjects.forEach(sub => {
+                const t1ScoreInput = document.getElementById(sub.t1)?.value;
+                const t2ScoreInput = document.getElementById(sub.t2)?.value;
+
+                // Use parseFloat and check for valid numbers
+                const t1Score = sub.t1 && t1ScoreInput !== "" ? parseFloat(t1ScoreInput) : null;
+                const t2Score = sub.t2 && t2ScoreInput !== "" ? parseFloat(t2ScoreInput) : null;
+                
+                let comment = "No Data";
+                let commentClass = "same"; 
+
+                // Input validation for scores (must be between 0 and 100)
+                const isValidT1 = t1Score !== null && !isNaN(t1Score) && t1Score >= 0 && t1Score <= 100;
+                const isValidT2 = t2Score !== null && !isNaN(t2Score) && t2Score >= 0 && t2Score <= 100;
+                
+                // If input was provided but was invalid, show an error and set score to null
+                if (sub.t1 && t1ScoreInput !== "" && !isValidT1) {
+                    showMessage(`🛑 Invalid score for ${sub.name} (Term 1). Must be 0-100.`);
+                    return; // Stop processing this student for clarity
+                }
+                if (sub.t2 && t2ScoreInput !== "" && !isValidT2) {
+                    showMessage(`🛑 Invalid score for ${sub.name} (Term 2). Must be 0-100.`);
+                    return; // Stop processing this student for clarity
+                }
+
+                // --- Subject-level Analysis ---
+
+                if (isValidT1 && isValidT2) {
+                    if (t2Score > t1Score) { 
+                        comment = `✅ Better (+${(t2Score - t1Score).toFixed(0)} points)`; 
+                        commentClass = "good"; 
+                    }
+                    else if (t2Score < t1Score) { 
+                        comment = `⚠️ Needs Improvement (-${(t1Score - t2Score).toFixed(0)} points)`; 
+                        commentClass = "needs"; 
+                    }
+                    else { 
+                        comment = "↔️ Same as Term 1"; 
+                        commentClass = "same"; 
+                    }
+                } else if (!isValidT1 && isValidT2) { 
+                    comment = "✨ New subject this term"; 
+                    commentClass = "new-subject"; 
+                } else if (isValidT1 && !isValidT2) { 
+                    comment = "Term 1 only"; 
+                    commentClass = "same"; 
+                } else if (!isValidT1 && !isValidT2) {
+                    comment = "Missing Data"; 
+                    commentClass = "same"; 
+                }
+
+                // --- Overall & Term Calculation & Lowest Score Tracking ---
+
+                if (isValidT1) {
+                    studentData.overallTotal += t1Score;
+                    studentData.overallCount++;
+                    studentData.t1Total += t1Score;
+                    studentData.t1Count++;
+                    if (t1Score < studentData.lowestScore) {
+                        studentData.lowestScore = t1Score;
+                        studentData.lowestSubject = `${sub.name} (Term 1)`;
+                    }
+                }
+
+                if (isValidT2) {
+                    studentData.overallTotal += t2Score;
+                    studentData.overallCount++;
+                    studentData.t2Total += t2Score;
+                    studentData.t2Count++;
+                    if (t2Score < studentData.lowestScore) {
+                        studentData.lowestScore = t2Score;
+                        studentData.lowestSubject = `${sub.name} (Term 2)`;
+                    }
+                }
+
+                studentData.subjects.push({ 
+                    ...sub, 
+                    t1Score: isValidT1 ? t1Score : null, 
+                    t2Score: isValidT2 ? t2Score : null, 
+                    comment, 
+                    commentClass 
+                });
+            });
+
+            // --- Final Overall Calculations ---
+            studentData.overallAverage = studentData.overallCount > 0 
+                ? (studentData.overallTotal / studentData.overallCount) 
+                : 0;
+
+            studentData.t1Average = studentData.t1Count > 0 
+                ? (studentData.t1Total / studentData.t1Count) 
+                : 0;
+
+            studentData.t2Average = studentData.t2Count > 0 
+                ? (studentData.t2Total / studentData.t2Count) 
+                : 0;
+            
+            // --- Overall Status ---
+            
+            let overallComment;
+            let overallClass = "needs"; // Default to needs improvement
+
+            if (studentData.overallCount === 0) {
+                overallComment = "No scores entered to calculate overall performance.";
+                overallClass = "same";
+            } else {
+                if (studentData.overallAverage >= 90) {
+                    overallComment = `🏆 EXCELLENT! Overall average (${studentData.overallAverage.toFixed(2)}%) is truly exceptional. Your performance is succeeding fully!`;
+                    overallClass = "good";
+                } else if (studentData.overallAverage >= 75) {
+                    overallComment = `👍 VERY STRONG performance (${studentData.overallAverage.toFixed(2)}%). A great success! Aim to raise your lowest score in ${studentData.lowestSubject}.`;
+                    overallClass = "good";
+                } else {
+                    overallComment = `⚠️ Requires Focus: Overall average (${studentData.overallAverage.toFixed(2)}%) needs lifting. Immediate focus needed on ${studentData.lowestSubject}.`;
+                    overallClass = "needs";
+                }
+            }
+
+            studentData.overallComment = overallComment;
+            studentData.overallClass = overallClass;
+
+
+            students.push(studentData);
+            renderTable();
+            document.getElementById("scoreForm").reset();
+            showMessage("✅ Student added and performance analyzed successfully!");
+        }
+
+        function renderTable() {
+            const tbody = document.querySelector("#resultTable tbody");
+            tbody.innerHTML = ""; 
+
+            const fragment = document.createDocumentFragment();
+
+            students.forEach(student => {
+                // 1. Render Subject Rows
+                student.subjects.forEach(sub => {
+                    const row = document.createElement('tr');
+                    // Ensure scores are displayed as "-" if null/invalid
+                    const t1Display = sub.t1Score !== null ? sub.t1Score.toFixed(0) : "-";
+                    const t2Display = sub.t2Score !== null ? sub.t2Score.toFixed(0) : "-";
+
+                    row.innerHTML = `
+                        <td>${student.name}</td>
+                        <td>${student.id || "-"}</td>
+                        <td>${sub.name}</td>
+                        <td style="text-align: center;">${t1Display}</td>
+                        <td style="text-align: center;">${t2Display}</td>
+                        <td class="${sub.commentClass}" style="text-align: left;">${sub.comment}</td>
+                    `;
+                    fragment.appendChild(row);
+                });
+
+                // 2. Render Summary Row (Term Totals/Averages & Overall Status)
+                const summaryRow = document.createElement('tr');
+                summaryRow.classList.add('summary-row');
+
+                const t1MaxTotal = student.t1Count * 100;
+                const t2MaxTotal = student.t2Count * 100;
+                
+                summaryRow.innerHTML = `
+                    <td colspan="2" style="font-weight: 700; background: #e6f7ff; text-align: center;">
+                        <span style="display: block; font-size: 1.1em; color: #1e3c72;">Term 1 Summary</span>
+                        <span style="display: block;" class="summary-text">Total Score: ${student.t1Total.toFixed(0)} / ${t1MaxTotal}</span>
+                        <span style="display: block; font-size: 1.1em; font-weight: 800; color: #842029;">Average: ${student.t1Average.toFixed(2)}%</span>
+                    </td>
+                    <td colspan="2" style="font-weight: 700; background: #e6f7ff; text-align: center;">
+                        <span style="display: block; font-size: 1.1em; color: #1e3c72;">Term 2 Summary</span>
+                        <span style="display: block;" class="summary-text">Total Score: ${student.t2Total.toFixed(0)} / ${t2MaxTotal}</span>
+                        <span style="display: block; font-size: 1.1em; font-weight: 800; color: #842029;">Average: ${student.t2Average.toFixed(2)}%</span>
+                    </td>
+                    <td colspan="2" class="${student.overallClass}" style="font-weight: 700; text-align: left; background: ${student.overallClass === 'good' ? '#d1e7dd' : student.overallClass === 'needs' ? '#f8d7da' : '#fff3cd'} !important;">
+                        <span style="display: block; font-size: 1.2em; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 5px; margin-bottom: 5px; color: ${student.overallClass === 'good' ? '#0f5132' : student.overallClass === 'needs' ? '#842029' : '#664d03'};">
+                            Overall Avg: ${student.overallAverage.toFixed(2)}%
+                        </span>
+                        <span class="summary-text" style="font-weight: 600;">
+                            ${student.overallComment}
+                        </span>
+                    </td>
+                `;
+                fragment.appendChild(summaryRow);
+
+                // Add a separator row for better visual distinction between students
+                const separatorRow = document.createElement('tr');
+                separatorRow.style.height = '20px';
+                separatorRow.style.backgroundColor = '#f4f7f9';
+                separatorRow.innerHTML = `<td colspan="6" style="border: none; padding: 0;"></td>`;
+                fragment.appendChild(separatorRow);
+            });
+            
+            tbody.appendChild(fragment); 
+        }
+    </script>
+
+</body>
+</html>
