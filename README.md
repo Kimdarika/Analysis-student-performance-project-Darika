@@ -127,7 +127,7 @@ This project analyzes student performance data for two academic terms. It helps 
 ## Input Data / Dataset
 The project requires structured input data for each student, which can be provided via CSV, form, or database.
 
-![Dashboard](https://i.pinimg.com/736x/80/10/5a/80105a6c3ce0d5528d06aa3e85ac19ba.jpg)
+![Dashboard](/image/graph.png)
 
 ### General Information
 - `Student ID` – Unique identifier for each student  
