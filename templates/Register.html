@@ -1,39 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign Up | Student Performance Analyzer</title>
-  <link rel="stylesheet" href="/static/js/add.js">
-  <link rel="stylesheet" href="/static/css/register.css">
-  <link rel="stylesheet" href="/static/js/add.js">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="/static/css/register.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-  <div class="register-box">
-    <h2>📝 Sign Up</h2>
-<!-- 
-    {% if message %}
-      <p class="message">{{ message|safe }}</p>
-    {% endif %} -->
-
-    <form method="POST" action="/register" id="registerForm">
-      <input type="text" name="username" placeholder="Enter Username" required>
-      <input type="password" name="password" placeholder="Enter Password" required>
-      <input type="password" name="confirm_password" placeholder="Confirm Password" required>
-      <select name="role" required>
-        <option value="">Select Role</option>
-        <option value="Teacher">Teacher</option>
-        <option value="Student">Student</option>
-      </select>
-      <input type="text" name="full_name" placeholder="Full Name (optional)">
-      <input type="email" name="email" placeholder="Email (optional)">
-      <button type="submit">Sign Up</button>
-    </form>
-
-    <p class="hint">Already have an account? <a href="/login">Login here</a></p>
-  </div>
-
-  <script src="{{ url_for('static', filename='js/register.js') }}"></script>
+    <div class="form-container">
+        <h1>Register New Student</h1>
+        
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+        {% endif %}
+        
+        <form method="POST" action="{{ url_for('register') }}">
+            <input type="email" name="username" placeholder="Email (e.g., test@school.edu)" required>
+            <input type="password" name="password" placeholder="Create Password" required>
+            <button type="submit">Register</button>
+        </form>
+        
+        <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+    </div>
 </body>
 </html>

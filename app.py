@@ -1,232 +1,151 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, g
-import pymysql
-import pymysql.cursors
-class MySQLShim:
-    def __init__(self, app):
-        self.app = app
-
-    @property
-    def connection(self):
-        # reuse connection per request
-        if 'mysql_conn' not in g:
-            cfg = self.app.config
-            g.mysql_conn = pymysql.connect(
-                host=cfg.get('MYSQL_HOST', 'localhost'),
-                user=cfg.get('MYSQL_USER', ''),
-                password=cfg.get('MYSQL_PASSWORD', ''),
-                database=cfg.get('MYSQL_DB', ''),
-                cursorclass=pymysql.cursors.Cursor,
-                autocommit=False,
-            )
-        return g.mysql_conn
-
-def close_mysql_connection(exception=None):
-    conn = g.pop('mysql_conn', None)
-    if conn is not None:
-        try:
-            conn.close()
-        except Exception:
-            pass
-
-from datetime import datetime
 import json
+from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
+# REQUIRED: Set a secret key for session management
+app.secret_key = 'safer_key_for_no_keyerror' 
 
-# MySQL Configuration
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'your_password'
-app.config['MYSQL_DB'] = 'student_performance'
-app.config['SECRET_KEY'] = 'your-secret-key-here'
+# --- Dummy Data (Simulates Database) ---
+# Credentials for testing: student@school.edu / password123
+DUMMY_USERS = {"student@school.edu": "password123"} 
+STUDENT_DATA = {
+    "name": "Alex Johnson",
+    "overall_gpa": 3.75,
+    # Mock data for the summary cards
+    "total_students": 120,
+    "average_score": 82.5,
+    "top_performer": "Sokha",
+    "pass_rate": 91.6,
+    # Detailed course data for the table and charts
+    "courses": [
+        {"name": "Calculus I", "grade": "A", "score": 92},
+        {"name": "Computer Science", "grade": "A-", "score": 89},
+        {"name": "English Literature", "grade": "B+", "score": 87},
+        {"name": "Physics", "grade": "C+", "score": 75},
+        {"name": "Chemistry", "grade": "B-", "score": 79},
+        {"name": "Web Design", "grade": "A+", "score": 95},
+    ]
+}
 
-# Initialize shim and teardown
-mysql = MySQLShim(app)
-app.teardown_appcontext(close_mysql_connection)
+# --- Utility Function for Placeholder Routes ---
+def placeholder_page(title):
+    """Helper to return simple HTML for unbuilt pages, inheriting the base template."""
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    return render_template('content.html', title=title) # Renders a simple content page
+    
+# --- Authentication Routes ---
 
-# Home route
-@app.route('/')
+@app.route('/index')
 def index():
-    return render_template('index.html')
+    if session.get('logged_in'):
+        return redirect(url_for('dashboard'))
+    return redirect(url_for('login'))
 
-# Dashboard route
-@app.route('/dashboard')
+
+@app.route('/', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        if username in DUMMY_USERS and DUMMY_USERS[username] == password:
+            session['logged_in'] = True
+            session['username'] = username
+            return redirect(url_for('dashboard'))
+        else:
+            error = 'Invalid Credentials. Please try again.'
+            
+    return render_template('login.html', error=error)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    error = None
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        if username in DUMMY_USERS:
+            error = 'User already exists!'
+            return render_template('register.html', error=error)
+        
+        DUMMY_USERS[username] = password
+        return redirect(url_for('login'))
+        
+    return render_template('register.html', error=error)
+
+
+@app.route('/logout')
+def logout():
+    session.clear() # Clears all session data
+    return redirect(url_for('login'))
+
+# --- Application Routes ---
+
+@app.route('/dashboard') 
 def dashboard():
-    return render_template('dashboard.html')
+    # Authentication Guard
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    
+    # 1. Prepare data for JavaScript charts
+    course_labels = [course["name"] for course in STUDENT_DATA["courses"]]
+    course_scores = [course["score"] for course in STUDENT_DATA["courses"]]
+    
+    # 2. Serialize data to JSON strings for safe transmission to the HTML template
+    course_labels_json = json.dumps(course_labels)
+    course_scores_json = json.dumps(course_scores)
+    
+    # 3. Pass all data to the template
+    return render_template(
+        'dashboard.html', 
+        student=STUDENT_DATA,
+        current_page='dashboard', # Passed for setting active navbar link
+        course_labels_json=course_labels_json,
+        course_scores_json=course_scores_json
+    )
 
-# Get all students
-@app.route('/api/students', methods=['GET'])
-def get_students():
-    try:
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM students ORDER BY name")
-        students = cur.fetchall()
-        cur.close()
-        
-        student_list = []
-        for student in students:
-            student_list.append({
-                'id': student[0],
-                'student_id': student[1],
-                'name': student[2],
-                'email': student[3],
-                'program': student[4],
-                'enrollment_date': student[5].strftime('%Y-%m-%d') if student[5] else None
-            })
-        
-        return jsonify(student_list)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+@app.route('/student-profile')
+def student_profile(): 
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    # Pass the specific student data to the profile template
+    return render_template('student-profile.html', student=STUDENT_DATA, current_page='student_profile')
 
-# Add new student
-@app.route('/api/students', methods=['POST'])
-def add_student():
-    try:
-        data = request.json
-        cur = mysql.connection.cursor()
-        cur.execute("""
-            INSERT INTO students (student_id, name, email, program, enrollment_date)
-            VALUES (%s, %s, %s, %s, %s)
-        """, (data['student_id'], data['name'], data['email'], data['program'], data['enrollment_date']))
-        mysql.connection.commit()
-        cur.close()
-        
-        return jsonify({'message': 'Student added successfully'}), 201
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
 
-# Get subjects by term
-@app.route('/api/subjects/<int:term>', methods=['GET'])
-def get_subjects(term):
-    try:
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM subjects WHERE term_number = %s", (term,))
-        subjects = cur.fetchall()
-        cur.close()
-        
-        subject_list = []
-        for subject in subjects:
-            subject_list.append({
-                'id': subject[0],
-                'code': subject[1],
-                'name': subject[2],
-                'term': subject[3],
-                'skill_type': subject[4]
-            })
-        
-        return jsonify(subject_list)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+# Placeholder routes using the utility function and passing the page title
+@app.route('/subject-analysis')
+def subject_analysis(): 
+    return render_template("subject-analysis.html")
+    # return placeholder_page("Subject Analysis")
 
-# Add assessment score
-@app.route('/api/assessments', methods=['POST'])
-def add_assessment():
-    try:
-        data = request.json
-        cur = mysql.connection.cursor()
-        cur.execute("""
-            INSERT INTO assessments (student_id, subject_id, term_number, assessment_type, score, max_score, date, notes)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        """, (data['student_id'], data['subject_id'], data['term_number'], 
-              data['assessment_type'], data['score'], data['max_score'], 
-              data['date'], data.get('notes', '')))
-        mysql.connection.commit()
-        cur.close()
-        
-        return jsonify({'message': 'Assessment added successfully'}), 201
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+@app.route('/comparison')
+def comparison(): 
+    return render_template("comparison.html")
 
-# Get student performance data
-@app.route('/api/performance/<int:student_id>', methods=['GET'])
-def get_performance(student_id):
-    try:
-        cur = mysql.connection.cursor()
-        cur.execute("""
-            SELECT a.*, s.name as subject_name, s.skill_type
-            FROM assessments a
-            JOIN subjects s ON a.subject_id = s.id
-            WHERE a.student_id = %s
-            ORDER BY a.date
-        """, (student_id,))
-        assessments = cur.fetchall()
-        cur.close()
-        
-        performance_data = []
-        for assessment in assessments:
-            performance_data.append({
-                'id': assessment[0],
-                'subject_id': assessment[2],
-                'subject_name': assessment[9],
-                'term': assessment[3],
-                'type': assessment[4],
-                'score': float(assessment[5]),
-                'max_score': float(assessment[6]),
-                'percentage': round((float(assessment[5]) / float(assessment[6])) * 100, 2),
-                'date': assessment[7].strftime('%Y-%m-%d'),
-                'skill_type': assessment[10]
-            })
-        
-        return jsonify(performance_data)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+@app.route('/prediction')
+def prediction():
+    return render_template("prediction.html")
 
-# Get analytics data
-@app.route('/api/analytics/<int:student_id>', methods=['GET'])
-def get_analytics(student_id):
-    try:
-        cur = mysql.connection.cursor()
-        
-        # Get overall performance by term
-        cur.execute("""
-            SELECT term_number, AVG((score/max_score)*100) as avg_percentage
-            FROM assessments
-            WHERE student_id = %s
-            GROUP BY term_number
-        """, (student_id,))
-        term_performance = cur.fetchall()
-        
-        # Get performance by subject
-        cur.execute("""
-            SELECT s.name, AVG((a.score/a.max_score)*100) as avg_percentage
-            FROM assessments a
-            JOIN subjects s ON a.subject_id = s.id
-            WHERE a.student_id = %s
-            GROUP BY s.name
-        """, (student_id,))
-        subject_performance = cur.fetchall()
-        
-        # Get performance by assessment type
-        cur.execute("""
-            SELECT assessment_type, AVG((score/max_score)*100) as avg_percentage
-            FROM assessments
-            WHERE student_id = %s
-            GROUP BY assessment_type
-        """, (student_id,))
-        assessment_performance = cur.fetchall()
-        
-        # Get skills performance
-        cur.execute("""
-            SELECT s.skill_type, AVG((a.score/a.max_score)*100) as avg_percentage
-            FROM assessments a
-            JOIN subjects s ON a.subject_id = s.id
-            WHERE a.student_id = %s AND s.skill_type IS NOT NULL
-            GROUP BY s.skill_type
-        """, (student_id,))
-        skills_performance = cur.fetchall()
-        
-        cur.close()
-        
-        analytics = {
-            'term_performance': [{'term': t[0], 'percentage': round(float(t[1]), 2)} for t in term_performance],
-            'subject_performance': [{'subject': s[0], 'percentage': round(float(s[1]), 2)} for s in subject_performance],
-            'assessment_performance': [{'type': a[0], 'percentage': round(float(a[1]), 2)} for a in assessment_performance],
-            'skills_performance': [{'skill': sk[0], 'percentage': round(float(sk[1]), 2)} for sk in skills_performance]
-        }
-        
-        return jsonify(analytics)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+@app.route('/reports')
+def reports(): 
+    return render_template("reports.html")
 
+@app.route('/teacher-insights')
+def teacher_insights(): 
+    return render_template("teacher-insights.html")
+
+@app.route('/trends')
+def trends(): 
+    return render_template("trends.html")
+
+
+# 
+
+
+# --- Application Entry Point ---
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True)
+
