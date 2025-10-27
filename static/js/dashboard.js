@@ -301,4 +301,5 @@ function updateSkillsChart(data) {
       },
     },
   })
+  
 }

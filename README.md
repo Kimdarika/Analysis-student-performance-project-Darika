@@ -1,5 +1,5 @@
 # Student Performance Tracking System
-
+![Dashboard](https://i.pinimg.com/736x/b2/b9/7f/b2b97fab420adedeb0f6c43592a6105a.jpg)
 A comprehensive Flask-based web application for tracking student performance across multiple terms, subjects, and assessment types.
 
 ## Features
@@ -12,11 +12,12 @@ A comprehensive Flask-based web application for tracking student performance acr
 - Performance trends and improvement graphs
 
 ## Technology Stack
+![Dashboard](https://i.pinimg.com/1200x/f5/30/b3/f530b397fb4005953bcf373d845f8090.jpg)
 
 - **Backend:** Flask (Python)
 - **Database:** MySQL
 - **Frontend:** HTML, CSS, JavaScript
-- **Charts:** Chart.js
+- **Charts:** js
 
 ## Installation
 
@@ -26,42 +27,6 @@ A comprehensive Flask-based web application for tracking student performance acr
 - MySQL Server
 - pip (Python package manager)
 
-### Setup Instructions
-
-1. **Clone or extract the project files**
-
-2. **Install Python dependencies**
-\`\`\`bash
-pip install -r requirements.txt
-\`\`\`
-
-3. **Set up MySQL Database**
-
-   - Start your MySQL server
-   - Create the database and tables:
-   \`\`\`bash
-   mysql -u root -p < database/schema.sql
-   \`\`\`
-   
-   - Insert sample data:
-   \`\`\`bash
-   mysql -u root -p < database/seed_data.sql
-   \`\`\`
-
-4. **Configure Database Connection**
-
-   Edit `app.py` and update the MySQL configuration:
-   \`\`\`python
-   app.config['MYSQL_HOST'] = 'localhost'
-   app.config['MYSQL_USER'] = 'root'
-   app.config['MYSQL_PASSWORD'] = 'your_password'
-   app.config['MYSQL_DB'] = 'student_performance'
-   \`\`\`
-
-5. **Run the Application**
-\`\`\`bash
-python app.py
-\`\`\`
 
 6. **Access the Application**
 
@@ -94,7 +59,9 @@ After selecting a student, you'll see:
 
 ## Project Structure
 
-\`\`\`
+![Dashboard](https://i.pinimg.com/1200x/d8/fa/9f/d8fa9fa02d25d7c04a941b6f67792ffc.jpg)
+
+<!-- \`\`\`
 student-performance-tracker/
 ├── app.py                  # Main Flask application
 ├── requirements.txt        # Python dependencies
@@ -110,36 +77,11 @@ student-performance-tracker/
 └── templates/
     ├── index.html         # Home page
     └── dashboard.html     # Dashboard page
-\`\`\`
-
-## API Endpoints
-
-- `GET /api/students` - Get all students
-- `POST /api/students` - Add new student
-- `GET /api/subjects/<term>` - Get subjects for a term
-- `POST /api/assessments` - Add assessment score
-- `GET /api/performance/<student_id>` - Get student performance data
-- `GET /api/analytics/<student_id>` - Get analytics data
-
-## Customization
-
-### Adding More Subjects
-
-Edit `database/seed_data.sql` and add new subjects:
-\`\`\`sql
-INSERT INTO subjects (subject_code, name, term_number, skill_type) VALUES
-('NEW101', 'New Subject', 1, 'hard_skill');
-\`\`\`
+\`\`\` -->
 
 ### Modifying Assessment Types
 
 Assessment types are defined in the database schema as an ENUM. To add more types, modify the schema.
-
-### Changing Color Scheme
-
-Edit `static/css/style.css` and modify the CSS variables in the `:root` selector.
-
-## Troubleshooting
 
 **Database Connection Error:**
 - Verify MySQL is running
@@ -163,6 +105,59 @@ Edit `static/css/style.css` and modify the CSS variables in the `:root` selector
 - Parent portal
 - Mobile app
 
-## License
 
-This project is open source and available for educational purposes.
+
+## Project Description
+
+![Dashboard](https://i.pinimg.com/736x/65/5b/81/655b81dc33c00f9fd29ce510700bdebf.jpg)
+
+This project analyzes student performance data for two academic terms. It helps teachers and administrators understand students’ progress, identify weak areas, and make data-driven decisions. The analysis includes grades, attendance, and subject-specific performance.
+
+---
+
+## Features
+- Input student data for Term 1 and Term 2  
+- Visualize performance per subject  
+- Compare overall performance across terms  
+- Generate reports for individual students or entire classes  
+- Identify trends and potential areas for improvement  
+
+---
+
+## Input Data / Dataset
+The project requires structured input data for each student, which can be provided via CSV, form, or database.
+
+![Dashboard](https://i.pinimg.com/736x/80/10/5a/80105a6c3ce0d5528d06aa3e85ac19ba.jpg)
+
+### General Information
+- `Student ID` – Unique identifier for each student  
+- `Full Name` – Student’s full name  
+- `Class` – Grade or class  
+- `Attendance` – Percentage or number of days attended per term  
+
+### Term 1 Subjects
+- `BCU` – Business Computing & Utilization  
+- `English for IT`  
+- `General English`  
+- `Logic`  
+- `PL` – Programming Language  
+- `Design`  
+
+### Term 2 Subjects
+- `English for IT`  
+- `General English`  
+- `Algorithm`  
+- `PL` – Programming Language  
+- `Web Design`  
+
+## Website us of Analysis student performance
+
+https://github.com/Kimdarika/Analysis-student-performance-project-Darika
+
+## 👩‍🦰  *Project Owner & Developer*
+
+Thanks goes to these wonderful people:
+
+<a href="https://github.com/Kimdarika">
+  <img src="https://avatars.githubusercontent.com/u/214124108?v=4" width="80" style="border-radius:50%"/>
+</a>

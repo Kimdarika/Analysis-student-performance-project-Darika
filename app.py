@@ -2,6 +2,8 @@ import json
 from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
+
+
 # REQUIRED: Set a secret key for session management
 app.secret_key = 'safer_key_for_no_keyerror' 
 
@@ -41,6 +43,9 @@ def index():
     if session.get('logged_in'):
         return redirect(url_for('dashboard'))
     return redirect(url_for('login'))
+
+
+
 
 
 @app.route('/', methods=['GET', 'POST'])
