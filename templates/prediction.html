@@ -519,6 +519,29 @@
             
             tbody.appendChild(fragment); 
         }
+         // --- Save data to MySQL through PHP ---
+       fetch("http://localhost/student_analyzer/save_student.php", {
+// ... rest of the code
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(studentData)
+        })
+        .then(res => res.json())
+        .then(result => {
+        if (result.status === "success") {
+            showMessage("✅ Data stored in MySQL successfully!");
+        } else {
+            showMessage("⚠️ Failed to save: " + result.message);
+        }
+        })
+        .catch(err => {
+        console.error(err);
+        showMessage("🛑 Error connecting to the server!");
+        showMessage("✅ Student added and performance analyzed successfully!");
+
+        });
     </script>
 
 </body>
