@@ -260,7 +260,7 @@ def trends():
     return render_template("trends.html")
 
 
-# 
+    
 
 
 # --- Application Entry Point ---

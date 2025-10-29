@@ -19,12 +19,12 @@
     <style>
         /* CSS to enforce full screen height */
         html, body {
-            height: 100%; /* Ensures HTML and Body take full viewport height */
+            height: 100%;
         }
         body {
             background-color: #f8f9fa; 
-            display: flex; /* Enables flexbox for sticky footer */
-            flex-direction: column; /* Stacks header, content, and footer vertically */
+            display: flex;
+            flex-direction: column;
         }
         
         .card-shadow {
@@ -38,12 +38,47 @@
             height: 350px;
             position: relative;
         }
+        /* Dashboard Metric Cards */
         .card-body{
             text-align: center;
             font-size: 25px;
         }
         .card{
             font-size: 20px;
+        }
+        /* Custom style for the new table card */
+        .performance-table-card .card-body {
+            padding: 0;
+            text-align: left;
+        }
+
+        /* --- Conditional Score Styling for Table Cells --- */
+        .score-excellent {
+            font-weight: bold;
+            color: #198754; /* Success Green */
+            background-color: #d1e7dd; /* Light Green background */
+        }
+        .score-good {
+            font-weight: bold;
+            color: #0dcaf0; /* Info Cyan */
+        }
+        .score-average {
+            font-weight: bold;
+            color: #ffc107; /* Warning Yellow */
+        }
+        .score-poor {
+            font-weight: bold;
+            color: #dc3545; /* Danger Red */
+        }
+        /* Ensure cells don't have too much internal padding */
+        .performance-table-card td, .performance-table-card th {
+            padding: 0.75rem;
+        }
+
+        /* Style for the Total Average column */
+        .total-avg-score {
+            font-weight: 700;
+            background-color: #e9ecef; /* Light gray to highlight total */
         }
     </style>
 </head>
@@ -58,7 +93,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="/dashboard">🏠 Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/student-profile">👩‍🎓 Student Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/student-profile">👩‍🎓 Student Management</a></li>
                     <li class="nav-item"><a class="nav-link" href="/subject-analysis">📘 Subject Analysis</a></li>
                     <li class="nav-item"><a class="nav-link" href="/comparison">📈 Comparison</a></li>
                     <li class="nav-item"><a class="nav-link" href="/prediction">🧮 Prediction</a></li>
@@ -77,15 +112,14 @@
                 <div class="card card-shadow h-100 border-start border-primary border-5">
                     <div class="card-body">
                         <p class="card-text text-muted mb-1">Total Students</p>
-                        <h2 class="card-title text-primary fw-bold">45</h2>
-                    </div>
+                        <h2 class="card-title text-primary fw-bold">25</h2> </div>
                 </div>
             </div>
             <div class="col-xl-3 col-md-6">
                 <div class="card card-shadow h-100 border-start border-success border-5">
                     <div class="card-body">
-                        <p class="card-text text-muted mb-1">Average Score</p>
-                        <h2 class="card-title text-success fw-bold">83.5%</h2>
+                        <p class="card-text text-muted mb-1">Overall Avg. Score</p>
+                        <h2 class="card-title text-success fw-bold" id="overallAvgScore">83.5%</h2>
                     </div>
                 </div>
             </div>
@@ -93,17 +127,14 @@
                 <div class="card card-shadow h-100 border-start border-warning border-5">
                     <div class="card-body">
                         <p class="card-text text-muted mb-1">Top Performer</p>
-                        <h5 class="card-title text-warning fw-bold">Sarah Chen</h5>
-                        <small class="text-muted">(95% Score)</small>
-                    </div>
+                        <h5 class="card-title text-warning fw-bold">Alex Johnson</h5> <small class="text-muted">(96.2% Score)</small> </div>
                 </div>
             </div>
             <div class="col-xl-3 col-md-6">
                 <div class="card card-shadow h-100 border-start border-info border-5">
                     <div class="card-body">
-                        <p class="card-text text-muted mb-1">Pass Rate</p>
-                        <h2 class="card-title text-info fw-bold">94.2%</h2>
-                    </div>
+                        <p class="card-text text-muted mb-1">Overall Pass Rate</p>
+                        <h2 class="card-title text-info fw-bold" id="overallPassRate">94.2%</h2> </div>
                 </div>
             </div>
         </div>
@@ -132,26 +163,32 @@
         </div>
 
         
-        <h1>Interactive Student List</h1>
-
-        <table id="studentTable">
-        <thead>
-            <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Class</th>
-            <th>Gender</th>
-            <th>Actions</th>
-            </tr>
-        </thead>
-            <tbody>
-                <!-- Rows populated by JS -->
-            </tbody>
-        </table>
-        <button class="add-btn" onclick="addStudent()">Add Student</button>
-        <div id="pagination"></div>
-        <script src="/static/js/ex.js"></script>
-    </div>
+        <div class="row g-4 mb-5">
+            <div class="col-12">
+                <div class="card card-shadow performance-table-card">
+                    <div class="card-header bg-dark text-white fw-bold">
+                        🗓️ Subject Performance Trend: Term 1 vs. Term 2
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Subject</th>
+                                    <th class="text-center">Avg. Score T1 (%)</th>
+                                    <th class="text-center">Avg. Score T2 (%)</th>
+                                    <th class="text-center total-avg-score">Overall Avg. (%)</th>
+                                    <th class="text-center">Change (T2-T1)</th>
+                                    <th class="text-center">Overall Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="performanceTableBody">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
@@ -159,49 +196,111 @@
         document.addEventListener('DOMContentLoaded', () => {
             Chart.register(ChartDataLabels);
 
+            // Mock Data Structure Updated for Two Terms
             const MOCK_STUDENT_DATA = {
+                // The courses array represents the unique subjects across both terms, 
+                // containing scores for T1 and T2 (or null if not taken)
                 courses: [
-                    { name: "English for IT", grade: "A", score: 89 },
-                    { name: "General English", grade: "B", score: 76 },
-                    { name: "Pl", grade: "C+", score: 72 },
-                    { name: "Algorithm", grade: "A+", score: 95 },
-                    { name: "Logic", grade: "A+", score: 92 },
-                    { name: "Design", grade: "B+", score: 80 },
-                    { name: "BCU", grade: "A", score: 91 },
+                    { name: "BCU", scoreT1: 91.0, scoreT2: null }, 
+                    { name: "English for IT", scoreT1: 89.2, scoreT2: 92.5 },
+                    { name: "General English", scoreT1: 76.5, scoreT2: 81.0 },
+                    { name: "Logic", scoreT1: 92.1, scoreT2: null },
+                    { name: "Programming Logic (PL)", scoreT1: 72.0, scoreT2: 78.8 },
+                    { name: "Design", scoreT1: 80.4, scoreT2: null },
+                    { name: "Algorithm", scoreT1: null, scoreT2: 95.8 },
+                    { name: "Web Design", scoreT1: null, scoreT2: 85.0 }, 
                 ]
             };
-            const DYNAMIC_COURSE_LABELS = MOCK_STUDENT_DATA.courses.map(c => c.name);
-            const DYNAMIC_COURSE_SCORES = MOCK_STUDENT_DATA.courses.map(c => c.score);
             
-            function populateTable(courses) {
-                const tableBody = document.getElementById('performanceTableBody');
-                courses.forEach(course => {
-                    let statusText, statusClass;
+            // --- Global Data Calculation ---
+            const ALL_SCORES = MOCK_STUDENT_DATA.courses
+                .flatMap(c => [c.scoreT1, c.scoreT2])
+                .filter(score => score !== null);
 
-                    if (course.score >= 90) {
-                        statusText = 'Excellent';
-                        statusClass = 'badge bg-primary';
-                    } else if (course.score >= 80) {
-                        statusText = 'Good';
-                        statusClass = 'badge bg-success';
-                    } else if (course.score >= 70) {
-                        statusText = 'Pass';
-                        statusClass = 'badge bg-warning text-dark';
-                    } else {
-                        statusText = 'Needs Focus';
-                        statusClass = 'badge bg-danger';
+            const OVERALL_AVG = ALL_SCORES.length > 0 
+                ? ALL_SCORES.reduce((a, b) => a + b, 0) / ALL_SCORES.length 
+                : 0;
+
+            document.getElementById('overallAvgScore').textContent = OVERALL_AVG.toFixed(1) + '%';
+            
+            const DYNAMIC_COURSE_LABELS = MOCK_STUDENT_DATA.courses.map(c => c.name);
+            // Use T2 score if available, otherwise T1 score for the initial bar chart visualization
+            const DYNAMIC_COURSE_SCORES = MOCK_STUDENT_DATA.courses.map(c => c.scoreT2 || c.scoreT1);
+
+            // --- Utility Function to Get Score Class ---
+            function getScoreClass(score) {
+                if (score >= 90) return 'score-excellent';
+                if (score >= 80) return 'score-good';
+                if (score >= 70) return 'score-average';
+                return 'score-poor';
+            }
+
+            // --- MODIFIED FUNCTION: Populates the Subject Performance Table ---
+            function populatePerformanceTable(courses) {
+                const tableBody = document.getElementById('performanceTableBody');
+                tableBody.innerHTML = ''; 
+                
+                courses.forEach(course => {
+                    const t1 = course.scoreT1;
+                    const t2 = course.scoreT2;
+                    
+                    let overallAvg = null;
+                    let change = null;
+                    
+                    const count = (t1 !== null) + (t2 !== null);
+                    if (count > 0) {
+                        overallAvg = ((t1 || 0) + (t2 || 0)) / count;
                     }
 
+                    if (t1 !== null && t2 !== null) {
+                        change = t2 - t1;
+                    }
+
+                    let statusText, statusClass;
+
+                    if (overallAvg !== null) {
+                        if (overallAvg >= 90) {
+                            statusText = 'High Excellence';
+                            statusClass = 'badge bg-primary';
+                        } else if (overallAvg >= 80) {
+                            statusText = 'Strong Performance';
+                            statusClass = 'badge bg-success';
+                        } else if (overallAvg >= 70) {
+                            statusText = 'Steady Progress';
+                            statusClass = 'badge bg-warning text-dark';
+                        } else {
+                            statusText = 'Critical Focus';
+                            statusClass = 'badge bg-danger';
+                        }
+                    } else {
+                         statusText = 'Single Term';
+                         statusClass = 'badge bg-secondary';
+                    }
+
+                    const t1Display = t1 !== null ? `<span class="${getScoreClass(t1)}">${t1.toFixed(1)}</span>` : 'N/A';
+                    const t2Display = t2 !== null ? `<span class="${getScoreClass(t2)}">${t2.toFixed(1)}</span>` : 'N/A';
+                    const overallAvgDisplay = overallAvg !== null ? overallAvg.toFixed(1) : 'N/A';
+
+                    let changeDisplay = 'N/A';
+                    if (change !== null) {
+                        const icon = change > 0 ? '⬆️' : (change < 0 ? '⬇️' : '➖');
+                        const colorClass = change > 0 ? 'text-success' : (change < 0 ? 'text-danger' : 'text-muted');
+                        changeDisplay = `<span class="${colorClass} fw-bold">${icon} ${Math.abs(change).toFixed(1)}</span>`;
+                    }
+                    
                     const row = tableBody.insertRow();
                     row.innerHTML = `
                         <td>${course.name}</td>
-                        <td>${course.grade}</td>
-                        <td>${course.score}</td>
-                        <td><span class="${statusClass}">${statusText}</span></td>
+                        <td class="text-center">${t1Display}</td>
+                        <td class="text-center">${t2Display}</td>
+                        <td class="text-center total-avg-score">${overallAvgDisplay}</td>
+                        <td class="text-center">${changeDisplay}</td>
+                        <td class="text-center"><span class="${statusClass} rounded-pill px-3">${statusText}</span></td>
                     `;
                 });
             }
 
+            // --- Charting Functions ---
             const getScoreColor = (value) => {
                 const hue = Math.max(0, Math.min(120, (value / 100) * 120));
                 return `hsl(${hue}, 70%, 50%)`;
@@ -209,15 +308,15 @@
 
             const backgroundColors = DYNAMIC_COURSE_SCORES.map(getScoreColor);
 
-            // --- 1. Subject Scores Chart ---
+            // --- 1. Subject Scores Chart (Shows latest known score T2 or T1) ---
             const subjectCtx = document.getElementById('subjectChart').getContext('2d');
             new Chart(subjectCtx, {
                 type: 'bar',
                 data: {
                     labels: DYNAMIC_COURSE_LABELS,
                     datasets: [{
-                        label: 'Score (%)',
-                        data: DYNAMIC_COURSE_SCORES,
+                        label: 'Latest Score (%)',
+                        data: DYNAMIC_COURSE_SCORES.map(s => s.toFixed(1)),
                         backgroundColor: backgroundColors,
                         borderColor: backgroundColors,
                         borderWidth: 1
@@ -242,13 +341,20 @@
                 }
             });
 
-            // --- 2. Grade Distribution Chart ---
+            // --- 2. Grade Distribution Chart (Uses existing data updated for 25 students) ---
+            const TOTAL_STUDENTS = 25; // Define the total for calculation
             const gradeDistributionData = {
                 labels: ['A+ (90-100)', 'A (80-89)', 'B (70-79)', 'C/F (<70)'],
-                counts: [9, 15, 12, 9],
+                // UPDATED: Counts adjusted to sum to 25 (e.g., 5 + 10 + 7 + 3 = 25)
+                counts: [5, 10, 7, 3], 
                 colors: ['#0d6efd', '#198754', '#ffc107', '#dc3545']
             };
+            const studentsPassed = gradeDistributionData.counts[0] + gradeDistributionData.counts[1] + gradeDistributionData.counts[2];
+            const passRate = (studentsPassed / TOTAL_STUDENTS) * 100;
 
+            // UPDATED: Recalculate and update Overall Pass Rate
+            document.getElementById('overallPassRate').textContent = passRate.toFixed(1) + '%'; 
+            
             const gradeCtx = document.getElementById('gradeChart').getContext('2d');
             new Chart(gradeCtx, {
                 type: 'doughnut',
@@ -268,20 +374,21 @@
                         datalabels: {
                             color: '#fff',
                             formatter: (value, context) => {
+                                // Display count (value) and percentage
                                 const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                return (value / total * 100).toFixed(1) + '%';
+                                const percentage = (value / total * 100).toFixed(1);
+                                return value + ' (' + percentage + '%)';
                             },
-                            font: { weight: 'bold', size: 14 }
+                            font: { weight: 'bold', size: 12 }
                         }
                     }
                 }
             });
 
-            populateTable(MOCK_STUDENT_DATA.courses);
-
+            // Call the function to populate the dashboard table
+            populatePerformanceTable(MOCK_STUDENT_DATA.courses);
+            
         });
-       
-
     </script>
     <footer>
         <p>© 2025 Student Analyzer. All Rights Reserved.</p>
