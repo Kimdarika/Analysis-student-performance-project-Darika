@@ -1,151 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🧑‍🏫 Teacher Insights | Student Analyzer</title>
-
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="teacher-insights.css">
-  <link rel="stylesheet" href="/static/css/navbar.css">
-  <link rel="stylesheet" href="/static/js/navbar.js">
-  <link rel="stylesheet" href="/static/css/footer.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Progress & Scores 🌈</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/static/css/navbar.css">
+    <link rel="stylesheet" href="/static/js/navbar.js">
+    <link rel="stylesheet" href="/static/css/footer.css">
+    <link rel="stylesheet" href="/static/css/Teacher Insights.css">
 </head>
 <body>
-
-  <!-- ✅ Navbar -->
+  
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
     <div class="container-fluid">
       <a class="navbar-brand fw-bold" href="index.html">Student Analyzer</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
-
-      <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="/dashboard">🏠 Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/student-profile">👩‍🎓 Student Management</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/subject-analysis">📘 Subject Analysis</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/comparison">📈 Comparison</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/prediction">🧮 Prediction</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/reports">📊 Reports</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/teacher-insights">🧑‍🏫 Teacher Insights</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/trends">🗓️ Trend</a></li>
-                </ul>
-      </div>
-    </div>
+            <li class="nav-item"><a class="nav-link active" aria-current="page" href="/dashboard">🏠 Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="/student-profile">👩‍🎓 Student Management</a></li>
+            <li class="nav-item"><a class="nav-link" href="/subject-analysis">📘 Subject Analysis</a></li>
+            <li class="nav-item"><a class="nav-link" href="/comparison">📈 Comparison</a></li>
+            <li class="nav-item"><a class="nav-link" href="/prediction">🧮 Prediction</a></li>
+            <li class="nav-item"><a class="nav-link" href="/reports">📊 Reports</a></li>
+            <li class="nav-item"><a class="nav-link" href="/teacher-insights">🧑‍🏫 Teacher Insights</a></li>
+            <li class="nav-item"><a class="nav-link" href="/trends">🗓️ Trend</a></li>
+        </ul>
+    </div>  
   </nav>
 
-  <!-- ✅ Main Content -->
-  <div class="container mt-4">
-    <h2 class="fw-bold text-primary mb-4">🧑‍🏫 Teacher Insights Dashboard</h2>
-
-    <!-- Input Form -->
-    <div class="card shadow-sm p-3 mb-4">
-      <h5 class="text-secondary mb-3">➕ Add New Insight</h5>
-      <form id="insightForm" class="row g-3">
-        <div class="col-md-3"><input type="text" class="form-control" id="subject" placeholder="Subject Name" required></div>
-        <div class="col-md-2"><input type="number" class="form-control" id="averageScore" placeholder="Average Score (%)" required></div>
-        <div class="col-md-3"><input type="text" class="form-control" id="topStudent" placeholder="Top Student" required></div>
-        <div class="col-md-3"><input type="text" class="form-control" id="weakArea" placeholder="Weak Area"></div>
-        <div class="col-md-1 d-grid"><button class="btn btn-primary" type="submit">Add</button></div>
-      </form>
-    </div>
-
-    <!-- Summary Cards -->
-    <div class="row g-3" id="summaryCards">
-      <div class="col-md-3">
-        <div class="card insight-card text-center p-3 shadow-sm">
-          <h6>Average Class Score</h6><h3 class="text-primary fw-bold" id="avgClassScore">-</h3>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card insight-card text-center p-3 shadow-sm">
-          <h6>Top Subject</h6><h3 class="text-success fw-bold" id="topSubject">-</h3>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card insight-card text-center p-3 shadow-sm">
-          <h6>Lowest Subject</h6><h3 class="text-danger fw-bold" id="lowestSubject">-</h3>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card insight-card text-center p-3 shadow-sm">
-          <h6>Top Performer</h6><h3 class="text-warning fw-bold" id="topPerformer">-</h3>
-        </div>
+  <div class="flex flex-col items-center justify-center min-h-screen">
+    <h1 class="text-5xl font-extrabold mb-3 text-center text-indigo-700 drop-shadow-lg">
+      Student Progress & Scores 🚀
+    </h1>
+    <p class="text-gray-600 mb-10 text-center text-lg">
+      Click a month to input or view student scores.
+    </p>
+    <div class="circle" id="circle">
+      <div class="center-info" id="centerInfo">
+        <h2>🌟 2025</h2>
       </div>
     </div>
-
-    <!-- Insights Table -->
-    <div class="card shadow-sm mt-5">
-      <div class="card-header bg-primary text-white fw-bold">📋 Subject Insights Summary</div>
-      <div class="card-body table-responsive">
-        <table class="table table-bordered table-striped align-middle">
-          <thead class="table-primary text-center">
-            <tr>
-              <th>Subject</th>
-              <th>Average Score</th>
-              <th>Top Student</th>
-              <th>Weak Area</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="insightTable"></tbody>
-        </table>
-        <button id="clearData" class="btn btn-danger mt-2">🗑️ Clear All Data</button>
+    <div id="scoreSection" class="bg-white w-full max-w-6xl p-8 rounded-2xl shadow-2xl mb-10 hidden mt-10 border border-indigo-100">
+      <h2 id="scoreMonth" class="text-4xl font-bold mb-6 text-center text-indigo-700 tracking-wide"></h2>
+      <div class="flex flex-wrap gap-6 justify-center mb-10">
+        <button class="bg-blue-500 text-white px-8 py-3 rounded-xl hover:bg-blue-600 text-lg shadow-md" onclick="showInput('Quiz')">Quiz</button>
+        <button class="bg-green-500 text-white px-8 py-3 rounded-xl hover:bg-green-600 text-lg shadow-md" onclick="showInput('Midterm')">Midterm</button>
+        <button class="bg-yellow-500 text-white px-8 py-3 rounded-xl hover:bg-yellow-600 text-lg shadow-md" onclick="showInput('Exam')">Exam</button>
+        <button class="bg-red-500 text-white px-8 py-3 rounded-xl hover:bg-red-600 text-lg shadow-md" onclick="showInput('Final Exam')">Final Exam</button>
       </div>
-    </div>
 
-    <!-- Charts -->
-    <div class="row mt-5">
-      <div class="col-md-6">
-        <div class="card shadow-sm">
-          <div class="card-header bg-info text-white fw-bold">📊 Average Score by Subject</div>
-          <div class="card-body"><canvas id="barChart"></canvas></div>
+      <!-- Input Section -->
+      <div id="inputSection" class="hidden bg-gray-50 p-6 rounded-xl border border-gray-200">
+        <h3 id="inputTitle" class="text-3xl font-semibold mb-6 text-center text-gray-800"></h3>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <h4 class="font-semibold mb-3 text-indigo-600 text-lg">Term 1</h4>
+            <div id="term1Inputs" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+          </div>
+
+          <div>
+            <h4 class="font-semibold mb-3 text-indigo-600 text-lg">Term 2</h4>
+            <div id="term2Inputs" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+          </div>
+        </div>
+
+        <div class="flex justify-center gap-6 mt-6">
+          <button class="bg-indigo-600 text-white px-10 py-2.5 rounded-xl hover:bg-indigo-700 shadow-md" onclick="saveScores()">💾 Save</button>
+          <button class="bg-gray-400 text-white px-10 py-2.5 rounded-xl hover:bg-gray-500 shadow-md" onclick="clearInputs()">🧹 Clear</button>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="card shadow-sm">
-          <div class="card-header bg-warning text-white fw-bold">📈 Performance Comparison</div>
-          <div class="card-body"><canvas id="radarChart"></canvas></div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Comments -->
-    <div class="card shadow-sm mt-5">
-      <div class="card-header bg-success text-white fw-bold">📝 Teacher Comments</div>
-      <div class="card-body">
-        <textarea class="form-control mb-3" id="teacherComments" rows="4" placeholder="Write your insights or feedback..."></textarea>
-        <button id="saveComments" class="btn btn-primary">💾 Save Comments</button>
+      <!-- Saved Section -->
+      <div id="savedSection" class="hidden mt-10">
+        <h3 class="text-3xl font-semibold mb-6 text-center text-gray-800">📊 Saved Scores</h3>
+        <div id="savedTable" class="space-y-6"></div>
       </div>
     </div>
+    <a href="/templates/trends.html" class="btn-compare flex items-center px-6 py-3 font-semibold text-white bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded-2xl shadow-lg"><svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H21M10 12H21M10 18H21M3 6h.01M3 12h.01M3 18h.01"/></svg>Compare Term</a>
+    <script>
+      // --- Setup and Variables ---
+      const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      const circle = document.getElementById("circle");
+      const centerInfo = document.getElementById("centerInfo");
+      const radius = 170, center = 215;
+
+      const term1Subjects = ["BCU","English for IT","General English","Logic","PL","Design"];
+      const term2Subjects = ["English for IT","General English","Algorithm","PL","Web Design"];
+
+      let currentType = "", currentMonth = "";
+      let allData = JSON.parse(localStorage.getItem('studentScores')) || {};
+
+      // --- Create Circle of Months ---
+      months.forEach((month, i) => {
+        const angle = (i / months.length) * 2 * Math.PI - Math.PI/2;
+        const x = center + radius * Math.cos(angle) - 35;
+        const y = center + radius * Math.sin(angle) - 35;
+
+        const div = document.createElement("div");
+        div.className = "month";
+        div.textContent = month;
+        div.style.left = `${x}px`;
+        div.style.top = `${y}px`;
+
+        div.addEventListener("mouseover", () => {
+          centerInfo.innerHTML = `<h2>${month}</h2>`;
+          centerInfo.style.background = div.style.background;
+        });
+
+        div.addEventListener("mouseout", () => {
+          centerInfo.innerHTML = `<h2>🌟 2025</h2>`;
+          centerInfo.style.background = "linear-gradient(135deg,#6366f1,#3b82f6)";
+        });
+
+        div.addEventListener("click", () => {
+          currentMonth = month;
+          document.getElementById("scoreSection").classList.remove("hidden");
+          document.getElementById("scoreMonth").innerText = `📅 Scores for ${month}`;
+          renderScores();
+          window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+        });
+
+        circle.appendChild(div);
+      });
+
+      // --- Show Input Section ---
+      function showInput(type) {
+        currentType = type;
+        document.getElementById("inputSection").classList.remove("hidden");
+        document.getElementById("inputTitle").innerText = `✨ ${type}`;
+
+        const term1Div = document.getElementById("term1Inputs");
+        const term2Div = document.getElementById("term2Inputs");
+        term1Div.innerHTML = "";
+        term2Div.innerHTML = "";
+
+        const saved = allData[currentMonth]?.[type] || { term1: [], term2: [] };
+
+        term1Subjects.forEach((sub, i) => {
+          const input = document.createElement("input");
+          input.type = "number";
+          input.min = 0; input.max = 100;
+          input.placeholder = sub;
+          input.value = saved.term1[i] || '';
+          input.className = "border border-gray-300 p-2 rounded-lg w-full focus:ring-2 focus:ring-indigo-400";
+          term1Div.appendChild(input);
+        });
+
+        term2Subjects.forEach((sub, i) => {
+          const input = document.createElement("input");
+          input.type = "number";
+          input.min = 0; input.max = 100;
+          input.placeholder = sub;
+          input.value = saved.term2[i] || '';
+          input.className = "border border-gray-300 p-2 rounded-lg w-full focus:ring-2 focus:ring-indigo-400";
+          term2Div.appendChild(input);
+        });
+      }
+
+      // --- Save Scores ---
+      function saveScores() {
+        const term1 = Array.from(document.querySelectorAll("#term1Inputs input")).map(i => i.value || 0);
+        const term2 = Array.from(document.querySelectorAll("#term2Inputs input")).map(i => i.value || 0);
+
+        if (!allData[currentMonth]) allData[currentMonth] = {};
+        allData[currentMonth][currentType] = { term1, term2 };
+
+        localStorage.setItem('studentScores', JSON.stringify(allData));
+        renderScores();
+        alert(`✅ Saved ${currentType} scores for ${currentMonth}`);
+      }
+
+      // --- Clear Inputs ---
+      function clearInputs() {
+        document.querySelectorAll("#term1Inputs input,#term2Inputs input").forEach(i => i.value = '');
+      }
+
+      // --- Delete Scores ---
+      function deleteScore(type) {
+        if (confirm(`Delete scores for ${type}?`)) {
+          delete allData[currentMonth][type];
+          localStorage.setItem('studentScores', JSON.stringify(allData));
+          renderScores();
+        }
+      }
+
+      // --- Render Saved Scores ---
+      function renderScores() {
+        const div = document.getElementById("savedTable");
+        div.innerHTML = "";
+        const data = allData[currentMonth] || {};
+
+        if (Object.keys(data).length === 0) {
+          document.getElementById("savedSection").classList.add("hidden");
+          return;
+        }
+        document.getElementById("savedSection").classList.remove("hidden");
+
+        for (const type in data) {
+          const wrapper = document.createElement("div");
+          wrapper.className = "border p-5 rounded-xl bg-gray-50 shadow-md hover:shadow-lg transition-all";
+
+          const header = document.createElement("div");
+          header.className = "flex justify-between items-center mb-3";
+          header.innerHTML = `<strong class="text-lg text-indigo-700">${type}</strong>`;
+
+          const btnContainer = document.createElement("div");
+          btnContainer.className = "flex gap-2";
+
+          const editBtn = document.createElement("button");
+          editBtn.className = "bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600";
+          editBtn.innerText = "Edit";
+          editBtn.onclick = () => showInput(type);
+          btnContainer.appendChild(editBtn);
+
+          const delBtn = document.createElement("button");
+          delBtn.className = "bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600";
+          delBtn.innerText = "Delete";
+          delBtn.onclick = () => deleteScore(type);
+          btnContainer.appendChild(delBtn);
+
+          header.appendChild(btnContainer);
+          wrapper.appendChild(header);
+
+          const table = document.createElement("table");
+          table.className = "w-full border-collapse text-sm";
+
+          let html = `<tr class="bg-gray-200"><th colspan="2" class="p-2 text-left">Term 1</th></tr>`;
+          data[type].term1.forEach((s, i) => {
+            html += `<tr class="border-t"><td class="p-1">${term1Subjects[i]}</td><td class="p-1 text-center">${s}</td></tr>`;
+          });
+
+          html += `<tr class="bg-gray-200"><th colspan="2" class="p-2 text-left">Term 2</th></tr>`;
+          data[type].term2.forEach((s, i) => {
+            html += `<tr class="border-t"><td class="p-1">${term2Subjects[i]}</td><td class="p-1 text-center">${s}</td></tr>`;
+          });
+
+          table.innerHTML = html;
+          wrapper.appendChild(table);
+          div.appendChild(wrapper);
+        }
+      }
+    </script>
+    
   </div>
-
-  <!-- ✅ Footer -->
   <footer>
-        <p>© 2025 Student Analyzer. All Rights Reserved.</p>
-        <p>
-            <a href="index.html">Home</a> | 
-            <a href="reports.html">Reports</a> | 
-            <a href="contact.html">Contact</a>
-        </p>
-        <p class="social-icons">
-            <a href="#" title="Facebook">📘</a>
-            <a href="#" title="Twitter">🐦</a>
-            <a href="#" title="LinkedIn">💼</a>
-        </p>
-        <p>Made with ❤️ by the Student Analyzer Team</p>
-    </footer>
+    <p>© 2025 Student Analyzer. All Rights Reserved.</p>
+    <p>
+        <a href="index.html">Home</a> | 
+        <a href="reports.html">Reports</a> | 
+        <a href="contact.html">Contact</a>
+    </p>
+    <p class="social-icons">
+        <a href="#" title="Facebook">📘</a>
+        <a href="#" title="Twitter">🐦</a>
+        <a href="#" title="LinkedIn">💼</a>
+    </p>
+    <p>Made with ❤️ by the Student Analyzer Team</p>
+  </footer>
   
-  <!-- Scripts -->
-  <script src="teacher-insights.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -12,3 +12,41 @@ body {
 #trendChart {
     height: 300px !important;
 }
+.table th {
+    background-color: #0d6efd;
+    color: #ffffff;
+    padding: 16px 20px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Chart container */
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 380px;
+}
+
+/* Sortable column headers */
+.sortable {
+    cursor: pointer;
+    user-select: none;
+    position: relative; /* Ensures arrows don't overlap text */
+    transition: color 0.2s ease;
+}
+
+.sortable:hover {
+    color: #ffc107; /* Highlight on hover */
+}
+
+.sortable.asc::after {
+    content: ' ▲';
+    margin-left: 6px; /* Spacing for the arrow */
+}
+
+.sortable.desc::after {
+    content: ' ▼';
+    margin-left: 6px;
+}
