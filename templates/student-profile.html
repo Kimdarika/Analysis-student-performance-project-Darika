@@ -5,47 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student List</title>
     <link rel="stylesheet" href="/static/css/navbar.css">
-    <link rel="stylesheet" href="/static/js/navbar.js">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="/static/css/student-profile.css">
-    
+    <style>
+        /* Clean, simple style for student names */
+        .student-name {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 8px;
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        .student-name.first,
+        .student-name.last {
+            color: orange;
+        }
+        .student-name:hover {
+            background-color: #d3d3d3;
+        }
+    </style>
 </head>
 <body class="p-6">
+
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm fixed-top">
         <div class="container-fluid">
-          <a class="navbar-brand fw-bold" href="index.html">Student Analyzer</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-    
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/dashboard">🏠 Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="/student-profile">👩‍🎓 Student Management</a></li>
-                <li class="nav-item"><a class="nav-link" href="/subject-analysis">📘 Subject Analysis</a></li>
-                <li class="nav-item"><a class="nav-link" href="/comparison">📈 Comparison</a></li>
-                <li class="nav-item"><a class="nav-link" href="/prediction">🧮 Prediction</a></li>
-                <li class="nav-item"><a class="nav-link" href="/reports">📊 Reports</a></li>
-                <li class="nav-item"><a class="nav-link" href="/teacher-insights">🧑‍🏫 Teacher Insights</a></li>
-                <li class="nav-item"><a class="nav-link" href="/trends">🗓️ Trend</a></li>
-            </ul>
-          </div>
+            <a class="navbar-brand fw-bold" href="index.html">Student Analyzer</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="/dashboard">🏠 Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/student-profile">👩‍🎓 Student Management</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/subject-analysis">📘 Subject Analysis</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/comparison">📈 Comparison</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/prediction">🧮 Prediction</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/reports">📊 Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/teacher-insights">🧑‍🏫 Teacher Insights</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/trends">🗓️ Trend</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
 
-    <div class="container-fluid">
-        <h1 class="">Student List Management 📝</h1>
-
+    <!-- Main Container -->
+    <div class="container-fluid" style="margin-top: 100px;">
+        <h1>Student List Management 📝</h1>
         <div id="statusMessage" class="success-message"></div>
 
-        <div class="input-container">
-            <input id="firstName" type="text" placeholder="First Name" class="form-control">
-            <input id="lastName" type="text" placeholder="Last Name" class="form-control">
-            <input id="className" type="text" placeholder="Class" class="form-control">
-            
+        <div class="input-container mb-3">
+            <input id="firstName" type="text" placeholder="First Name" class="form-control mb-2">
+            <input id="lastName" type="text" placeholder="Last Name" class="form-control mb-2">
+            <input id="className" type="text" placeholder="Class" class="form-control mb-2">
             <div id="actionButtons">
-                <button id="mainActionButton" onclick="addStudent()" class="btn btn-lg btn-add">Add</button>
+                <button id="mainActionButton" onclick="addStudent()" class="btn btn-lg btn-success">Add</button>
             </div>
         </div>
 
@@ -59,8 +75,7 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody id="tableBody">
-                </tbody>
+            <tbody id="tableBody"></tbody>
         </table>
     </div>
 
@@ -104,26 +119,25 @@
             const statusMessage = document.getElementById('statusMessage');
             statusMessage.innerHTML = message;
             statusMessage.style.opacity = '1';
-            
-            // Hide the message after 3 seconds
-            setTimeout(() => {
-                statusMessage.style.opacity = '0';
-            }, 3000);
+            setTimeout(() => { statusMessage.style.opacity = '0'; }, 3000);
         }
 
         function renderTable() {
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = "";
             students.forEach((student, index) => {
+                const firstNameLink = `<a href="/trends?first=${student.first}&last=${student.last}&class=${student.class}" class="student-name first">${student.first}</a>`;
+                const lastNameLink = `<a href="/trends?first=${student.first}&last=${student.last}&class=${student.class}" class="student-name last">${student.last}</a>`;
+
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${index + 1}</td>
-                    <td>${student.first}</td>
-                    <td>${student.last}</td>
+                    <td>${firstNameLink}</td>
+                    <td>${lastNameLink}</td>
                     <td>${student.class}</td>
                     <td>
-                        <button onclick="editStudent(${index})" class="btn btn-warning btn-edit">Edit</button>
-                        <button onclick="deleteStudent(${index})" class="btn btn-danger btn-delete">Delete</button>
+                        <button onclick="editStudent(${index})" class="btn btn-warning btn-sm">Edit</button>
+                        <button onclick="deleteStudent(${index})" class="btn btn-danger btn-sm">Delete</button>
                     </td>
                 `;
                 tbody.appendChild(row);
@@ -140,90 +154,68 @@
             isEditing = false;
             editIndex = -1;
             mainActionButton.textContent = 'Add';
-            mainActionButton.classList.remove('btn-save');
-            mainActionButton.classList.remove('btn-info'); // Remove Bootstrap's default info color
-            mainActionButton.classList.add('btn-add');
+            mainActionButton.classList.remove('btn-info');
+            mainActionButton.classList.add('btn-success');
 
-            // Remove the Cancel button if it exists
             const cancelButton = document.getElementById('cancelEditButton');
-            if (cancelButton) {
-                cancelButton.remove();
-            }
+            if(cancelButton) cancelButton.remove();
             clearInputs();
         }
 
         function addStudent() {
-            const firstNameInput = document.getElementById('firstName');
-            const lastNameInput = document.getElementById('lastName');
-            const classNameInput = document.getElementById('className');
-            
-            const first = firstNameInput.value.trim();
-            const last = lastNameInput.value.trim();
-            const cls = classNameInput.value.trim();
-
-            if(!first || !last || !cls) {
+            const first = document.getElementById('firstName').value.trim();
+            const last = document.getElementById('lastName').value.trim();
+            const cls = document.getElementById('className').value.trim();
+            if(!first || !last || !cls){
                 alert('Please fill all fields');
                 return;
             }
 
-            if (isEditing) {
-                // Save changes to the existing student
+            if(isEditing){
                 students[editIndex] = {first, last, class: cls};
-                showSuccessMessage(`✅ Successfully **SAVED** ${first} ${last}'s details.`);
+                showSuccessMessage(`✅ Successfully SAVED ${first} ${last}`);
             } else {
-                // Add new student
                 students.push({first, last, class: cls});
-                showSuccessMessage(`➕ Successfully **ADDED** **${first} ${last}** to the list.`);
+                showSuccessMessage(`➕ Successfully ADDED ${first} ${last}`);
             }
-
             renderTable();
             resetAddState();
         }
 
-        function deleteStudent(index) {
-            const studentName = students[index].first + " " + students[index].last;
-            if(confirm(`Are you sure you want to delete ${studentName}?`)){
+        function deleteStudent(index){
+            if(confirm(`Are you sure you want to delete ${students[index].first} ${students[index].last}?`)){
                 students.splice(index, 1);
                 renderTable();
-                showSuccessMessage(`❌ Successfully **DELETED** ${studentName}.`);
-                
-                // If the user deletes a student while editing, reset the form
-                if(index === editIndex || students.length === 0) {
-                     resetAddState();
-                }
+                showSuccessMessage(`❌ Successfully DELETED student`);
+                if(index === editIndex || students.length === 0) resetAddState();
             }
         }
 
-        function editStudent(index) {
+        function editStudent(index){
             const student = students[index];
-            
-            // Populate input fields with student data
             document.getElementById('firstName').value = student.first;
             document.getElementById('lastName').value = student.last;
             document.getElementById('className').value = student.class;
 
-            // Set editing state
             isEditing = true;
             editIndex = index;
 
-            // Change the "Add" button to "Save"
             mainActionButton.textContent = 'Save';
-            mainActionButton.classList.remove('btn-add');
-            mainActionButton.classList.add('btn-save', 'btn-info'); // Use custom btn-save and Bootstrap's btn-info
+            mainActionButton.classList.remove('btn-success');
+            mainActionButton.classList.add('btn-info');
 
-            // Add the "Cancel" button if it doesn't exist
-            if (!document.getElementById('cancelEditButton')) {
+            if(!document.getElementById('cancelEditButton')){
                 const cancelButton = document.createElement('button');
                 cancelButton.id = 'cancelEditButton';
                 cancelButton.textContent = 'Cancel';
-                cancelButton.className = 'btn btn-secondary btn-cancel';
+                cancelButton.className = 'btn btn-secondary ms-2';
                 cancelButton.onclick = resetAddState;
                 actionButtonsDiv.appendChild(cancelButton);
             }
         }
 
-        // Initial render
         renderTable();
     </script>
+
 </body>
 </html>

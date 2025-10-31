@@ -259,10 +259,6 @@ def teacher_insights():
 def trends(): 
     return render_template("trends.html")
 
-
-    
-
-
 # --- Application Entry Point ---
 if __name__ == '__main__':
     app.run(debug=True)
