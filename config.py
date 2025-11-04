@@ -5,7 +5,7 @@ DB_CONFIG = {
     'host': 'localhost',
     'user': 'root',
     'password': '',
-    'database': 'performance_db'
+    'database': 'student_managerment_db'
 }
 
 def get_connection():

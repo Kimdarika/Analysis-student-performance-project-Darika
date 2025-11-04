@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
-# Load environment variables from .env if present
+# Load environment variables from .env if present                                                                       
 load_dotenv()
 
 # REQUIRED: Set a secret key for session management
