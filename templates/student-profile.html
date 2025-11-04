@@ -38,8 +38,8 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="/dashboard">🏠 Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/student-profile">👩‍🎓 Student Management</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/dashboard">🏠 Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/student-profile">👩‍🎓 Student Management</a></li>
                     <li class="nav-item"><a class="nav-link" href="/subject-analysis">📘 Subject Analysis</a></li>
                     <li class="nav-item"><a class="nav-link" href="/comparison">📈 Comparison</a></li>
                     <li class="nav-item"><a class="nav-link" href="/prediction">🧮 Prediction</a></li>
@@ -126,8 +126,8 @@
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = "";
             students.forEach((student, index) => {
-                const firstNameLink = `<a href="/trends?first=${student.first}&last=${student.last}&class=${student.class}" class="student-name first">${student.first}</a>`;
-                const lastNameLink = `<a href="/trends?first=${student.first}&last=${student.last}&class=${student.class}" class="student-name last">${student.last}</a>`;
+                const firstNameLink = `<a href="/teacher-insights?first=${student.first}&last=${student.last}&class=${student.class}" class="student-name first">${student.first}</a>`;
+                const lastNameLink = `<a href="/teacher-insights?first=${student.first}&last=${student.last}&class=${student.class}" class="student-name last">${student.last}</a>`;
 
                 const row = document.createElement('tr');
                 row.innerHTML = `
