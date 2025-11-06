@@ -217,3 +217,54 @@ body {
         .subtitle {
             color: #6b7280;
         }
+
+.chart-container {
+  height: 200px;
+  width: 100%;
+}
+
+/* Progress Bar */
+.progress-bar {
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* Score Badge */
+.score-badge {
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* Highlight Background */
+.bg-highlight {
+  background-color: #fff3cd;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+  .chart-container {
+    height: 150px;
+  }
+
+  .nav-tabs .nav-link {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.6rem;
+    white-space: nowrap;
+  }
+
+  .score-badge {
+    font-size: 0.8rem;
+  }
+}
+
+/* Optional: Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .bg-highlight {
+    background-color: #5c4d1a;
+    color: #fff3cd;
+  }
+}

@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 import mysql.connector
 from mysql.connector import Error
 from werkzeug.security import generate_password_hash, check_password_hash
-
 app = Flask(__name__)
 
 # Load environment variables from .env if present                                                                       
@@ -83,9 +82,6 @@ def ensure_users_table():
 
 # Try to ensure the users table exists (harmless if DB not reachable)
 ensure_users_table()
-
-
-
 # --- Utility Function for Placeholder Routes ---
 def placeholder_page(title):
     """Helper to return simple HTML for unbuilt pages, inheriting the base template."""
