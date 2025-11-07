@@ -10,11 +10,7 @@ body {
 .navbar-nav .nav-link:hover {
   color: #ffe082 !important;
 }
-.navbar-nav .nav-link.active {
-  background-color: rgba(255,255,255,0.2);
-  border-radius: 8px;
-  padding: 6px 12px;
-}
+
 
 /* Cards */
 .insight-card {
@@ -37,6 +33,7 @@ body {
 .table-striped tbody tr:nth-child(odd) {
   background-color: #eef3fb;
 }
+<<<<<<< HEAD
 
 /* Footer */
 .footer {
@@ -268,3 +265,5 @@ body {
     color: #fff3cd;
   }
 }
+=======
+>>>>>>> main
