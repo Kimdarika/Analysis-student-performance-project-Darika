@@ -108,3 +108,15 @@
             z-index: 2000;
             font-weight: 600;
         }
+        .student-name {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 8px;
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        .student-name.first, .student-name.last { color: rgb(0, 0, 0); }
+        .student-name:hover { background-color: #d3d3d3; }
+        .success-message { margin-bottom: 15px; color: green; transition: opacity 0.5s; }
+        td img { object-fit: cover; }
