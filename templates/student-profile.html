@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student List</title>
     <link rel="stylesheet" href="/static/css/navbar.css">
+    <link rel="stylesheet" href="/static/js/navbar.js">
+    <link rel="stylesheet" href="/static/css/footer.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="/static/css/student-profile.css">
-    <!-- ✅ Bootstrap Icons for better action buttons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <style>
         .student-name {
             display: inline-block;
@@ -19,255 +18,301 @@
             text-decoration: none;
             transition: background-color 0.2s;
         }
-        .student-name.first, .student-name.last { color: rgb(0, 0, 0); }
-        .student-name:hover { background-color: #d3d3d3; }
-        .success-message { margin-bottom: 15px; color: green; transition: opacity 0.5s; }
-        td img { object-fit: cover; }
+        .student-name.first,
+        .student-name.last {
+            color: rgb(0, 0, 0);
+        }
+        .student-name:hover {
+            background-color: #d3d3d3;
+        }
+        .success-message {
+            margin-bottom: 15px;
+            color: green;
+            transition: opacity 0.5s;
+        }
     </style>
 </head>
 <body class="p-6">
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm fixed-top">
-    <div class="container-fluid">
-        <a class="navbar-brand fw-bold" href="index.html">Student Analyzer</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="/dashboard">🏠 Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link active" href="/student-profile">👩‍🎓 Student Management</a></li>
-                <li class="nav-item"><a class="nav-link" href="/subject-analysis">📘 Subject Analysis</a></li>
-                <li class="nav-item"><a class="nav-link" href="/comparison">📈 Comparison</a></li>
-                <li class="nav-item"><a class="nav-link" href="/prediction">🧮 Prediction</a></li>
-                <li class="nav-item"><a class="nav-link" href="/reports">📊 Reports</a></li>
-                <li class="nav-item"><a class="nav-link" href="/teacher-insights">🧑‍🏫 Teacher Insights</a></li>
-                <li class="nav-item"><a class="nav-link" href="/trends">🗓️ Trend</a></li>
-            </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="index.html">Student Analyzer</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/dashboard">🏠 Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/student-profile">👩‍🎓 Student Management</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/subject-analysis">📘 Subject Analysis</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/comparison">📈 Comparison</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/prediction">🧮 Prediction</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/reports">📊 Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/teacher-insights">🧑‍🏫 Teacher Insights</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/trends">🗓️ Trend</a></li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<div class="container-fluid" style="margin-top: 100px;">
-    <h1>Student List Management 📝</h1>
-    <div id="statusMessage" class="success-message"></div>
+    <div class="container-fluid" style="margin-top: 100px;">
+        <h1>Student List Management 📝</h1>
+        <div id="statusMessage" class="success-message"></div>
 
-    <div class="input-container mb-3">
-        <input id="ID" type="text" placeholder="ID" class="form-control mb-2">
-        <input id="photoProfile" type="text" placeholder="Photo Profile URL" class="form-control mb-2">
-        <input id="firstName" type="text" placeholder="First Name" class="form-control mb-2">
-        <input id="lastName" type="text" placeholder="Last Name" class="form-control mb-2">
-        <input id="gender" type="text" placeholder="Gender" class="form-control mb-2">
-        <input id="className" type="text" placeholder="Class" class="form-control mb-2">
-        <div id="actionButtons">
-            <button id="mainActionButton" onclick="addStudent()" class="btn btn-lg btn-success">Add</button>
+        <div class="input-container mb-3">
+            <input id="ID" type="text" placeholder="ID" class="form-control mb-2">
+            <input id="photoProfile" type="text" placeholder="Photo URL" class="form-control mb-2">
+            <input id="firstName" type="text" placeholder="First Name" class="form-control mb-2">
+            <input id="lastName" type="text" placeholder="Last Name" class="form-control mb-2">
+            <input id="gender" type="text" placeholder="Gender" class="form-control mb-2">
+            <input id="className" type="text" placeholder="Class" class="form-control mb-2">
+            <div id="actionButtons">
+                <button id="mainActionButton" onclick="addStudent()" class="btn btn-lg btn-success">Add</button>
+            </div>
         </div>
+
+        <table id="studentTable" class="table table-striped table-hover table-bordered shadow-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Photo Profile</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Gender</th>
+                    <th>Class</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
     </div>
 
-    <table id="studentTable" class="table table-striped table-hover table-bordered shadow-sm">
-        <thead class="table-light">
-            <tr>
-                <th>ID</th>
-                <th>Photo Profile</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Gender</th>
-                <th>Class</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-    </table>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+        const mainActionButton = document.getElementById('mainActionButton');
+        const actionButtonsDiv = document.getElementById('actionButtons');
+        let isEditing = false;
+        let editIndex = -1;
 
-<!-- Modal for View Graph -->
-<div class="modal fade" id="viewModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title">Student Performance Graph</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <canvas id="scoreChart"></canvas>
-      </div>
-    </div>
-  </div>
-</div>
+        // Load students from localStorage or default 77 students
+        let students = JSON.parse(localStorage.getItem('students')) || [
+            // Class A (1-26)
+            {id:"1", first:"PANHA", last:"KOEUN", gender:"M", class:"A", photo:""},
+            {id:"2", first:"SOPHEA", last:"SOPHORN", gender:"F", class:"A", photo:""},
+            {id:"3", first:"PISET", last:"NEA", gender:"M", class:"A", photo:""},
+            {id:"4", first:"SOPHY", last:"MOEURN", gender:"F", class:"A", photo:""},
+            {id:"5", first:"LIHEANG", last:"HENG", gender:"M", class:"A", photo:""},
+            {id:"6", first:"PHALLA", last:"SUONG", gender:"F", class:"A", photo:""},
+            {id:"7", first:"PHOUN", last:"PHAN", gender:"M", class:"A", photo:""},
+            {id:"8", first:"RATHANA", last:"SOKHA", gender:"F", class:"A", photo:""},
+            {id:"9", first:"THALITA", last:"SOK", gender:"F", class:"A", photo:""},
+            {id:"10", first:"BOREY", last:"PENH", gender:"M", class:"A", photo:""},
+            {id:"11", first:"RINA", last:"HO", gender:"F", class:"A", photo:""},
+            {id:"12", first:"CHANTHEA", last:"CHHEA", gender:"F", class:"A", photo:""},
+            {id:"13", first:"MAKARA", last:"PINN", gender:"M", class:"A", photo:""},
+            {id:"14", first:"VICHEKA", last:"HAV", gender:"F", class:"A", photo:""},
+            {id:"15", first:"SEYHA", last:"NY", gender:"M", class:"A", photo:""},
+            {id:"16", first:"CHANNY", last:"VEN", gender:"F", class:"A", photo:""},
+            {id:"17", first:"VICHEKA", last:"SOENG", gender:"F", class:"A", photo:""},
+            {id:"18", first:"SAMART", last:"LUCH", gender:"M", class:"A", photo:""},
+            {id:"19", first:"REAM", last:"KHORN", gender:"M", class:"A", photo:""},
+            {id:"20", first:"KOEMSEANG", last:"PHOEURN", gender:"M", class:"A", photo:""},
+            {id:"21", first:"DANE", last:"MIOK", gender:"M", class:"A", photo:""},
+            {id:"22", first:"VA", last:"KHIM KREAN", gender:"M", class:"A", photo:""},
+            {id:"23", first:"SAN", last:"SVIT", gender:"F", class:"A", photo:""},
+            {id:"24", first:"MOLIKA", last:"LON", gender:"F", class:"A", photo:""},
+            {id:"25", first:"SOKSEYLA", last:"SEN", gender:"F", class:"A", photo:""},
+            {id:"26", first:"REACH", last:"TALAB", gender:"M", class:"A", photo:""},
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-// ----------------------------
-// EXISTING STUDENTS (unchanged)
-// ----------------------------
-let students = [
-    {id:"1", first:"PANHA", last:"KOEUN", gender:"M", class:"A", photo:""},
-    {id:"2", first:"SOPHEA", last:"SOPHORN", gender:"F", class:"A", photo:""},
-    {id:"3", first:"PISET", last:"NEA", gender:"M", class:"A", photo:""},
-    {id:"4", first:"SOPHY", last:"MOEURN", gender:"F", class:"A", photo:""},
-    {id:"77", first:"DARINHILT HAM", last:"", gender:"M", class:"C", photo:""}
-];
+            // Class B (27-52)
+            {id:"27", first:"CHHITCHHANUT", last:"NANG", gender:"M", class:"B", photo:""},
+            {id:"28", first:"SOKKHOEURN", last:"LENG", gender:"F", class:"B", photo:""},
+            {id:"29", first:"CHANTREA", last:"HAN", gender:"F", class:"B", photo:""},
+            {id:"30", first:"SREYDOEURN", last:"KEO", gender:"F", class:"B", photo:""},
+            {id:"31", first:"SREYDETH", last:"KHON", gender:"F", class:"B", photo:""},
+            {id:"32", first:"NARITH", last:"HEN", gender:"M", class:"B", photo:""},
+            {id:"33", first:"SREYPOV", last:"HUT", gender:"F", class:"B", photo:""},
+            {id:"34", first:"VICHET", last:"SAT", gender:"M", class:"B", photo:""},
+            {id:"35", first:"SOTHIN", last:"KE", gender:"M", class:"B", photo:""},
+            {id:"36", first:"REAKSMEY", last:"SAN", gender:"F", class:"B", photo:""},
+            {id:"37", first:"DARIKA", last:"KIM", gender:"F", class:"B", photo:""},
+            {id:"38", first:"SIEVMEY", last:"VAN", gender:"F", class:"B", photo:""},
+            {id:"39", first:"SINAT", last:"LEK", gender:"M", class:"B", photo:""},
+            {id:"40", first:"MAKARA", last:"PON", gender:"F", class:"B", photo:""},
+            {id:"41", first:"LITA", last:"SOK", gender:"F", class:"B", photo:""},
+            {id:"42", first:"VISA", last:"SAK", gender:"F", class:"B", photo:""},
+            {id:"43", first:"PILIP", last:"YOM", gender:"M", class:"B", photo:""},
+            {id:"44", first:"SAVIN", last:"PHUONG", gender:"M", class:"B", photo:""},
+            {id:"45", first:"SEREY", last:"PHEM", gender:"F", class:"B", photo:""},
+            {id:"46", first:"MESARIN", last:"M", gender:"M", class:"B", photo:""},
+            {id:"47", first:"NITACHHROUN", last:"F", gender:"F", class:"B", photo:""},
+            {id:"48", first:"SATANBUNTIT", last:"M", gender:"M", class:"B", photo:""},
+            {id:"49", first:"VANNALEN", last:"M", gender:"M", class:"B", photo:""},
+            {id:"50", first:"SREYKEOKEUN", last:"F", gender:"F", class:"B", photo:""},
+            {id:"51", first:"CHANSAYHAHOEURN", last:"M", gender:"M", class:"B", photo:""},
+            {id:"52", first:"KRAVANNYOR", last:"M", gender:"M", class:"B", photo:""},
 
-// Load from localStorage if exists
-let storedStudents = localStorage.getItem('studentsData');
-if (storedStudents) students = JSON.parse(storedStudents);
+            // Class C (53-77)
+            {id:"53", first:"TOLATIM", last:"M", gender:"M", class:"C", photo:""},
+            {id:"54", first:"SOPHATS IENG", last:"M", gender:"M", class:"C", photo:""},
+            {id:"55", first:"SREYVIKVON", last:"F", gender:"F", class:"C", photo:""},
+            {id:"56", first:"SOPHEAPHAL", last:"F", gender:"F", class:"C", photo:""},
+            {id:"57", first:"KINGVOEUN", last:"M", gender:"M", class:"C", photo:""},
+            {id:"58", first:"CHAMROEUNSONG", last:"M", gender:"M", class:"C", photo:""},
+            {id:"59", first:"KHOUEN", last:"M", gender:"M", class:"C", photo:""},
+            {id:"60", first:"SIVSANN", last:"M", gender:"M", class:"C", photo:""},
+            {id:"61", first:"SREYROTHSANG", last:"F", gender:"F", class:"C", photo:""},
+            {id:"62", first:"LYSARL", last:"M", gender:"M", class:"C", photo:""},
+            {id:"63", first:"CHANDYSRIN", last:"F", gender:"F", class:"C", photo:""},
+            {id:"64", first:"SREYLEAKSEMF", last:"F", gender:"F", class:"C", photo:""},
+            {id:"65", first:"SOKKEANGYEANG", last:"F", gender:"F", class:"C", photo:""},
+            {id:"66", first:"SREYMOMPO", last:"F", gender:"F", class:"C", photo:""},
+            {id:"67", first:"MESARIN", last:"M", gender:"M", class:"C", photo:""},
+            {id:"68", first:"ROEURNROS", last:"M", gender:"M", class:"C", photo:""},
+            {id:"69", first:"SAMNANGSIM", last:"M", gender:"M", class:"C", photo:""},
+            {id:"70", first:"SOKNYNIM", last:"M", gender:"M", class:"C", photo:""},
+            {id:"71", first:"RANITREN", last:"F", gender:"F", class:"C", photo:""},
+            {id:"72", first:"CHANTHYCHET", last:"F", gender:"F", class:"C", photo:""},
+            {id:"73", first:"YAPHORN", last:"M", gender:"M", class:"C", photo:""},
+            {id:"74", first:"KUNTHEAYON", last:"F", gender:"F", class:"C", photo:""},
+            {id:"75", first:"SOKYANGLAKK", last:"F", gender:"F", class:"C", photo:""},
+            {id:"76", first:"MARYSAO", last:"F", gender:"F", class:"C", photo:""},
+            {id:"77", first:"DARINHILT HAM", last:"M", gender:"M", class:"C", photo:""}
+        ];
 
-const mainActionButton = document.getElementById('mainActionButton');
-const actionButtonsDiv = document.getElementById('actionButtons');
-let isEditing = false;
-let editIndex = -1;
-let chartInstance = null;
+        // Save students to localStorage
+        function saveToStorage() {
+            localStorage.setItem('students', JSON.stringify(students));
+        }
 
-// Save to localStorage
-function saveToStorage() {
-    localStorage.setItem('studentsData', JSON.stringify(students));
-}
+        // Show success message
+        function showSuccessMessage(message) {
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.innerHTML = message;
+            statusMessage.style.opacity = '1';
+            setTimeout(() => { statusMessage.style.opacity = '0'; }, 3000);
+        }
 
-function showSuccessMessage(message) {
-    const statusMessage = document.getElementById('statusMessage');
-    statusMessage.innerHTML = message;
-    statusMessage.style.opacity = '1';
-    setTimeout(() => { statusMessage.style.opacity = '0'; }, 3000);
-}
+        // Render the table
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = "";
+            students.forEach((student, index) => {
+                const firstNameLink = `<a href="/teacher-insights?first=${student.first}&last=${student.last}&class=${student.class}" class="student-name first">${student.first}</a>`;
+                const lastNameLink = `<a href="/teacher-insights?first=${student.first}&last=${student.last}&class=${student.class}" class="student-name last">${student.last}</a>`;
+                const photoTag = student.photo ? `<img src="${student.photo}" alt="Profile" width="40" height="40" style="border-radius:50%;">` : '';
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${student.id || index+1}</td>
+                    <td>${photoTag}</td>
+                    <td>${firstNameLink}</td>
+                    <td>${lastNameLink}</td>
+                    <td>${student.gender || ''}</td>
+                    <td>${student.class}</td>
+                    <td>
+                        <button onclick="editStudent(${index})" class="btn btn-warning btn-sm">Edit</button>
+                        <button onclick="deleteStudent(${index})" class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
 
-function renderTable() {
-    const tbody = document.getElementById('tableBody');
-    tbody.innerHTML = "";
-    students.forEach((student, index) => {
-        const firstNameLink = `<a href="/teacher-insights?first=${student.first}&last=${student.last}&class=${student.class}" class="student-name first">${student.first}</a>`;
-        const lastNameLink = `<a href="/teacher-insights?first=${student.first}&last=${student.last}&class=${student.class}" class="student-name last">${student.last}</a>`;
-        const photoHTML = student.photo 
-            ? `<img src="${student.photo}" alt="${student.first} ${student.last}" style="width:50px; height:50px; border-radius:50%;">`
-            : `<div style="width:50px; height:50px; border-radius:50%; background-color:#ccc; display:flex; align-items:center; justify-content:center;">No Photo</div>`;
+        // Clear input fields
+        function clearInputs() {
+            document.getElementById('ID').value = '';
+            document.getElementById('photoProfile').value = '';
+            document.getElementById('firstName').value = '';
+            document.getElementById('lastName').value = '';
+            document.getElementById('gender').value = '';
+            document.getElementById('className').value = '';
+        }
 
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${student.id || index+1}</td>
-            <td>${photoHTML}</td>
-            <td>${firstNameLink}</td>
-            <td>${lastNameLink}</td>
-            <td>${student.gender || ''}</td>
-            <td>${student.class}</td>
-            <td class="text-center">
-                <div class="btn-group" role="group" aria-label="Actions">
-                    <button onclick="viewStudent(${index})" class="btn btn-outline-info btn-sm" data-bs-toggle="tooltip" title="View Performance">
-                        <i class="bi bi-bar-chart-line"></i>
-                    </button>
-                    <button onclick="editStudent(${index})" class="btn btn-outline-warning btn-sm" data-bs-toggle="tooltip" title="Edit Info">
-                        <i class="bi bi-pencil-square"></i>
-                    </button>
-                    <button onclick="deleteStudent(${index})" class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip" title="Delete Student">
-                        <i class="bi bi-trash3"></i>
-                    </button>
-                </div>
-            </td>
-        `;
-        tbody.appendChild(row);
-    });
+        // Reset add/edit state
+        function resetAddState() {
+            isEditing = false;
+            editIndex = -1;
+            mainActionButton.textContent = 'Add';
+            mainActionButton.classList.remove('btn-info');
+            mainActionButton.classList.add('btn-success');
+            const cancelButton = document.getElementById('cancelEditButton');
+            if(cancelButton) cancelButton.remove();
+            clearInputs();
+        }
 
-    // Enable tooltips
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    tooltipTriggerList.map(el => new bootstrap.Tooltip(el))
-}
+        // Add or save student
+        function addStudent() {
+            const id = document.getElementById('ID').value.trim();
+            const photo = document.getElementById('photoProfile').value.trim();
+            const first = document.getElementById('firstName').value.trim();
+            const last = document.getElementById('lastName').value.trim();
+            const gender = document.getElementById('gender').value.trim();
+            const cls = document.getElementById('className').value.trim();
+            if(!first || !last || !cls){ alert('Please fill all required fields'); return; }
+            if(isEditing){
+                students[editIndex] = {id, photo, first, last, gender, class: cls};
+                showSuccessMessage(`✅ Successfully SAVED ${first} ${last}`);
+            } else {
+                students.push({id, photo, first, last, gender, class: cls});
+                showSuccessMessage(`➕ Successfully ADDED ${first} ${last}`);
+            }
+            saveToStorage();
+            renderTable();
+            resetAddState();
+        }
 
-function clearInputs() {
-    document.getElementById('ID').value = '';
-    document.getElementById('photoProfile').value = '';
-    document.getElementById('firstName').value = '';
-    document.getElementById('lastName').value = '';
-    document.getElementById('gender').value = '';
-    document.getElementById('className').value = '';
-}
+        // Delete student
+        function deleteStudent(index){
+            if(confirm(`Are you sure you want to delete ${students[index].first} ${students[index].last}?`)){
+                students.splice(index, 1);
+                saveToStorage();
+                renderTable();
+                showSuccessMessage(`❌ Successfully DELETED student`);
+                if(index === editIndex || students.length === 0) resetAddState();
+            }
+        }
 
-function resetAddState() {
-    isEditing = false;
-    editIndex = -1;
-    mainActionButton.textContent = 'Add';
-    mainActionButton.classList.remove('btn-info');
-    mainActionButton.classList.add('btn-success');
-    const cancelButton = document.getElementById('cancelEditButton');
-    if(cancelButton) cancelButton.remove();
-    clearInputs();
-}
+        // Edit student
+        function editStudent(index){
+            const student = students[index];
+            document.getElementById('ID').value = student.id;
+            document.getElementById('photoProfile').value = student.photo;
+            document.getElementById('firstName').value = student.first;
+            document.getElementById('lastName').value = student.last;
+            document.getElementById('gender').value = student.gender;
+            document.getElementById('className').value = student.class;
 
-function addStudent() {
-    const id = document.getElementById('ID').value.trim();
-    const photo = document.getElementById('photoProfile').value.trim();
-    const first = document.getElementById('firstName').value.trim();
-    const last = document.getElementById('lastName').value.trim();
-    const gender = document.getElementById('gender').value.trim();
-    const cls = document.getElementById('className').value.trim();
-    if(!first || !last || !cls){ alert('Please fill all fields'); return; }
-    if(isEditing){
-        students[editIndex] = {id, photo, first, last, gender, class: cls};
-        showSuccessMessage(`✅ Successfully SAVED ${first} ${last}`);
-    } else {
-        students.push({id, photo, first, last, gender, class: cls});
-        showSuccessMessage(`➕ Successfully ADDED ${first} ${last}`);
-    }
-    saveToStorage();
-    renderTable();
-    resetAddState();
-}
+            isEditing = true;
+            editIndex = index;
+            mainActionButton.textContent = 'Save';
+            mainActionButton.classList.remove('btn-success');
+            mainActionButton.classList.add('btn-info');
 
-function deleteStudent(index){
-    if(confirm(`Are you sure you want to delete ${students[index].first} ${students[index].last}?`)){
-        students.splice(index, 1);
-        saveToStorage();
+            if(!document.getElementById('cancelEditButton')){
+                const cancelButton = document.createElement('button');
+                cancelButton.id = 'cancelEditButton';
+                cancelButton.textContent = 'Cancel';
+                cancelButton.className = 'btn btn-secondary ms-2';
+                cancelButton.onclick = resetAddState;
+                actionButtonsDiv.appendChild(cancelButton);
+            }
+        }
+
         renderTable();
-        showSuccessMessage(`❌ Successfully DELETED student`);
-        if(index === editIndex || students.length === 0) resetAddState();
-    }
-}
-
-function editStudent(index){
-    const student = students[index];
-    document.getElementById('ID').value = student.id;
-    document.getElementById('photoProfile').value = student.photo;
-    document.getElementById('firstName').value = student.first;
-    document.getElementById('lastName').value = student.last;
-    document.getElementById('gender').value = student.gender;
-    document.getElementById('className').value = student.class;
-
-    isEditing = true;
-    editIndex = index;
-    mainActionButton.textContent = 'Save';
-    mainActionButton.classList.remove('btn-success');
-    mainActionButton.classList.add('btn-info');
-
-    if(!document.getElementById('cancelEditButton')){
-        const cancelButton = document.createElement('button');
-        cancelButton.id = 'cancelEditButton';
-        cancelButton.textContent = 'Cancel';
-        cancelButton.className = 'btn btn-secondary ms-2';
-        cancelButton.onclick = resetAddState;
-        actionButtonsDiv.appendChild(cancelButton);
-    }
-}
-
-function viewStudent(index) {
-    const student = students[index];
-    const ctx = document.getElementById('scoreChart').getContext('2d');
-    const term1Subjects = ['BCU', 'English for IT', 'General English', 'Logic', 'PL', 'Design'];
-    const term2Subjects = ['English for IT', 'General English', 'Algorithm', 'PL', 'Web Design'];
-    const term1Scores = term1Subjects.map(() => Math.floor(Math.random() * 40) + 60);
-    const term2Scores = term2Subjects.map(() => Math.floor(Math.random() * 40) + 60);
-    if(chartInstance) chartInstance.destroy();
-    chartInstance = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: [...term1Subjects, ...term2Subjects],
-            datasets: [
-                {label:'Term 1',data:[...term1Scores,...Array(term2Subjects.length).fill(null)],backgroundColor:'rgba(54,162,235,0.6)',borderColor:'rgba(54,162,235,1)',borderWidth:1},
-                {label:'Term 2',data:[...Array(term1Subjects.length).fill(null),...term2Scores],backgroundColor:'rgba(255,99,132,0.6)',borderColor:'rgba(255,99,132,1)',borderWidth:1}
-            ]
-        },
-        options:{responsive:true,plugins:{title:{display:true,text:`${student.first} ${student.last} - Academic Performance`}},scales:{y:{beginAtZero:true,max:100}}}
-    });
-    new bootstrap.Modal(document.getElementById('viewModal')).show();
-}
-
-renderTable();
-</script>
+    </script>
+    
+    <footer>
+        <p>© 2025 Student Analyzer. All Rights Reserved.</p>
+        <p>
+            <a href="index.html">Home</a> | 
+            <a href="reports.html">Reports</a> | 
+            <a href="contact.html">Contact</a>
+        </p>
+        <p class="social-icons">
+            <a href="#" title="Facebook">📘</a>
+            <a href="#" title="Twitter">🐦</a>
+            <a href="#" title="LinkedIn">💼</a>
+        </p>
+        <p>Made with ❤️ by the Student Analyzer Team</p>
+    </footer>
 </body>
 </html>
