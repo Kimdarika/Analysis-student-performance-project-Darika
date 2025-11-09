@@ -1,65 +1,54 @@
-/* CSS to enforce full screen height */
-        html, body {
-            height: 100%;
-        }
-        body {
-            background-color: #f8f9fa; 
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .card-shadow {
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s;
-        }
-        .card-shadow:hover {
-            transform: translateY(-3px);
-        }
-        .chart-container {
-            height: 350px;
-            position: relative;
-        }
-        /* Dashboard Metric Cards */
-        .card-body{
-            text-align: center;
-            font-size: 25px;
-        }
-        .card{
-            font-size: 20px;
-        }
-        /* Custom style for the new table card */
-        .performance-table-card .card-body {
-            padding: 0;
-            text-align: left;
-        }
+.card { 
+    border-radius: 15px; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
+    transition:0.3s; 
+}
+.card:hover { 
+    transform: translateY(-3px); 
+    box-shadow:0 8px 25px rgba(0,0,0,0.15); 
+}
 
-        /* --- Conditional Score Styling for Table Cells --- */
-        .score-excellent {
-            font-weight: bold;
-            color: #198754; /* Success Green */
-            background-color: #d1e7dd; /* Light Green background */
-        }
-        .score-good {
-            font-weight: bold;
-            color: #0dcaf0; /* Info Cyan */
-        }
-        .score-average {
-            font-weight: bold;
-            color: #ffc107; /* Warning Yellow */
-        }
-        .score-poor {
-            font-weight: bold;
-            color: #dc3545; /* Danger Red */
-        }
-        
-        /* MODIFIED: Reduce font size and padding for the entire table content */
-        .performance-table-card td, .performance-table-card th {
-            padding: 0.5rem; /* Reduced from 0.75rem for compactness */
-            font-size: 16px; /* Significantly reduced font size */
-        }
-
-        /* Style for the Total Average column */
-        .total-avg-score {
-            font-weight: 700;
-            background-color: #e9ecef; /* Light gray to highlight total */
-        }
+/* Table styling */
+.table thead th { 
+    position: sticky; 
+    top: 0; z-index:10; 
+    background:#0d6efd; 
+    color:#fff; 
+    text-align:center; 
+}
+.table tbody tr:nth-child(even) { 
+    background: #f9f9f9;
+ 
+}
+.table tbody tr:hover { 
+    background: #e2f0ff; 
+}
+.table td, .table th { 
+    vertical-align: middle; 
+    text-align:center; 
+}
+.text-start { 
+    text-align:left; 
+}
+.score-high { 
+    background:#d4edda; 
+} 
+.score-medium { 
+    background:#fff3cd; 
+} 
+.score-low { 
+    background:#f8d7da; 
+} 
+.title{
+  text-align: center;
+  padding-top: 50px;
+  padding-bottom: 25px;
+  margin: 0px 200px;
+}
+.cademic{
+  color: blue;
+  font-size: 50px;
+}
+.Student{
+  font-size: 18px;
+}

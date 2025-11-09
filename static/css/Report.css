@@ -66,3 +66,16 @@ button:hover {
   color: gray;
   margin-top: 10px;
 }
+.card {
+  border-radius: 12px; 
+}
+h2, h4, h5 { 
+  font-weight: 600; 
+}
+.table thead { 
+  background-color: #0d6efd; 
+  color: #fff; 
+}
+.table-striped>tbody>tr:nth-of-type(odd) { 
+  background-color: #e9f2ff; 
+}

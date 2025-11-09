@@ -1,82 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📈 Comparison | Student Analyzer</title>
-<link rel="stylesheet" href="/static/css/navbar.css">
-<link rel="stylesheet" href="/static/js/navbar.js">
-<link rel="stylesheet" href="/static/css/footer.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-html, body {
-  height: 100%;
-  margin: 0;
-  font-family: "Poppins", sans-serif;
-  background: linear-gradient(135deg, #ffffff, #e8eaf6);
-}
-
-.container {
-  max-width: 100%;
-  padding: 20px 40px;
-}
-
-.card {
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-  transition: 0.3s;
-  width: 100%;
-}
-.card:hover {
-  transform: translateY(-3px);
-}
-
-h2 {
-  font-weight: 700;
-  color: #0d47a1;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-}
-
-.table th {
-  background: linear-gradient(45deg, #0d47a1, #1976d2);
-  color: white;
-}
-
-.table tbody tr:hover {
-  background-color: rgba(13,71,161,0.1);
-}
-
-.btn {
-  font-weight: 600;
-  transition: 0.3s;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  background-color: #1565c0;
-}
-
-select.form-select {
-  border-radius: 12px;
-  padding: 8px 12px;
-  transition: 0.3s;
-}
-
-select.form-select:focus {
-  border-color: #0d47a1;
-  box-shadow: 0 0 8px rgba(13,71,161,0.3);
-}
-
-#compareChart {
-  width: 50% !important;
-  height: 650px !important;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📈 Comparison | Student Analyzer</title>
+    <link rel="stylesheet" href="/static/css/navbar.css">
+    <link rel="stylesheet" href="/static/js/navbar.js">
+    <link rel="stylesheet" href="/static/css/footer.css">
+    <link rel="stylesheet" href="/static/css/comparison.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-
-    <!-- ===== Navbar ===== -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
     <div class="container-fluid">
         <a class="navbar-brand fw-bold" href="index.html">Student Analyzer</a>
@@ -100,8 +35,6 @@ select.form-select:focus {
 
     <div class="container my-4">
         <h2 class="text-center mb-5">📊 Student Performance Comparison (Term 1 vs Term 2)</h2>
-
-        <!-- Student Select -->
         <div class="card p-4 mb-5">
             <h5 class="text-secondary mb-3">Select Student Name</h5>
             <div class="row g-3 align-items-center">
@@ -115,8 +48,6 @@ select.form-select:focus {
             </div>
             </div>
         </div>
-
-        <!-- Results -->
         <div id="resultArea" style="display:none;">
             <div class="card p-4 mb-4">
                 <h5 class="mb-3 text-secondary">📋 Score Comparison Table</h5>
@@ -141,9 +72,22 @@ select.form-select:focus {
             </div>
         </div>
     </div>
-    
+    <footer class="text-center mt-5">
+        <hr>
+        <p>© 2025 Student Analyzer | Confidential Report</p>
+        <p>
+        <a href="index.html">Home</a> | 
+        <a href="reports.html">Reports</a> | 
+        <a href="contact.html">Contact</a>
+        </p>
+        <p class="social-icons">
+        <a href="#" title="Facebook">📘</a>
+        <a href="#" title="Twitter">🐦</a>
+        <a href="#" title="LinkedIn">💼</a>
+        </p>
+        <p>Made with ❤️ by the Student Analyzer Team</p>
+    </footer>
     <script>
-    // ===== Students List =====
     const studentNames = [
     "PANHA KOEUN","SOPHEA SOPHORN","PISET NEA","SOPHY MOEURN","LIHEANG HENG","PHALLA SUONG",
     "PHOUN PHAN","RATHANA SOKHA","THALITA SOK","BOREY PENH","RINA HO","CHANTHEA CHHEA",
@@ -160,8 +104,6 @@ select.form-select:focus {
     "SAMNANGSIM M","SOKNYNIM M","RANITREN F","CHANTHYCHET F","YAPHORN M","KUNTHEAYON F",
     "SOKYANGLAKK F","MARYSAO F","DARINHILT HAM M"
     ];
-
-    // Fill Dropdown
     const studentSelect = document.getElementById("studentSelect");
     studentNames.forEach(name => {
     const opt = document.createElement("option");
@@ -169,8 +111,6 @@ select.form-select:focus {
     opt.textContent = name;
     studentSelect.appendChild(opt);
     });
-
-    // Example Students Data
     let students = [];
     studentNames.forEach(name => {
     students.push({name:name, term:"term1", scores:Array.from({length:6}, ()=>Math.floor(Math.random()*21)+70)});
@@ -179,8 +119,6 @@ select.form-select:focus {
 
     const term1Subjects = ["BCU","English for IT","General English","Logic","PL","Design"];
     const term2Subjects = ["English for IT","General English","Algorithm","PL","Web Design"];
-
-    // Compare Function
     document.getElementById('compareBtn').addEventListener('click',()=>{
     const name = studentSelect.value;
     if(!name) return alert("Please select a student.");
@@ -221,8 +159,6 @@ select.form-select:focus {
     drawChart(allSubjects,dataT1,dataT2,name);
     attachRowEvents();
     });
-
-    // Chart Function
     let chartInstance = null;
     function drawChart(labels,dataT1,dataT2,name){
     const ctx=document.getElementById('compareChart').getContext('2d');
@@ -240,8 +176,6 @@ select.form-select:focus {
         }
     });
     }
-
-    // Edit/Delete Row Events
     function attachRowEvents(){
     document.querySelectorAll('.editBtn').forEach(btn=>{
         btn.onclick=function(){

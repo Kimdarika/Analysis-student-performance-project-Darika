@@ -1,13 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Performance Analyzer</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📊 Reports | Student Analyzer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/reports.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -37,15 +33,97 @@
             </div>
         </div>
     </nav>
+
     <div id="messageBox"></div>
+
     <div class="container">
         <h1>Student Performance Analyzer 📊</h1>
         
         <form id="scoreForm">
             <div class="form-group">
-                <label for="studentName">Student Name</label>
-                <input type="text" id="studentName" placeholder="e.g., Jane Doe" required>
+                <label for="studentName" >Student Name</label>
+                <select id="studentName" required>
+                    <option value="" disabled selected>Select a student</option>
+                    <option value="PANHA KOEUN">PANHA KOEUN</option>
+                    <option value="SOPHEA SOPHORN">SOPHEA SOPHORN</option>
+                    <option value="PISET NEA">PISET NEA</option>
+                    <option value="SOPHY MOEURN">SOPHY MOEURN</option>
+                    <option value="LIHEANG HENG">LIHEANG HENG</option>
+                    <option value="PHALLA SUONG">PHALLA SUONG</option>
+                    <option value="PHOUN PHAN">PHOUN PHAN</option>
+                    <option value="RATHANA SOKHA">RATHANA SOKHA</option>
+                    <option value="THALITA SOK">THALITA SOK</option>
+                    <option value="BOREY PENH">BOREY PENH</option>
+                    <option value="RINA HO">RINA HO</option>
+                    <option value="CHANTHEA CHHEA">CHANTHEA CHHEA</option>
+                    <option value="MAKARA PINN">MAKARA PINN</option>
+                    <option value="VICHEKA HAV">VICHEKA HAV</option>
+                    <option value="SEYHA NY">SEYHA NY</option>
+                    <option value="CHANNY VEN">CHANNY VEN</option>
+                    <option value="VICHEKA SOENG">VICHEKA SOENG</option>
+                    <option value="SAMART LUCH">SAMART LUCH</option>
+                    <option value="REAM KHORN">REAM KHORN</option>
+                    <option value="KOEMSEANG PHOEURN">KOEMSEANG PHOEURN</option>
+                    <option value="DANE MIOK">DANE MIOK</option>
+                    <option value="VA KHIM KREAN">VA KHIM KREAN</option>
+                    <option value="SAN SVIT">SAN SVIT</option>
+                    <option value="MOLIKA LON">MOLIKA LON</option>
+                    <option value="SOKSEYLA SEN">SOKSEYLA SEN</option>
+                    <option value="REACH TALAB">REACH TALAB</option>
+                    <option value="CHHITCHHANUT NANG">CHHITCHHANUT NANG</option>
+                    <option value="SOKKHOEURN LENG">SOKKHOEURN LENG</option>
+                    <option value="CHANTREA HAN">CHANTREA HAN</option>
+                    <option value="SREYDOEURN KEO">SREYDOEURN KEO</option>
+                    <option value="SREYDETH KHON">SREYDETH KHON</option>
+                    <option value="NARITH HEN">NARITH HEN</option>
+                    <option value="SREYPOV HUT">SREYPOV HUT</option>
+                    <option value="VICHET SAT">VICHET SAT</option>
+                    <option value="SOTHIN KE">SOTHIN KE</option>
+                    <option value="REAKSMEY SAN">REAKSMEY SAN</option>
+                    <option value="DARIKA KIM">DARIKA KIM</option>
+                    <option value="SIEVMEY VAN">SIEVMEY VAN</option>
+                    <option value="SINAT LEK">SINAT LEK</option>
+                    <option value="MAKARA PON">MAKARA PON</option>
+                    <option value="LITA SOK">LITA SOK</option>
+                    <option value="VISA SAK">VISA SAK</option>
+                    <option value="PILIP YOM">PILIP YOM</option>
+                    <option value="SAVIN PHUONG">SAVIN PHUONG</option>
+                    <option value="SEREY PHEM">SEREY PHEM</option>
+                    <option value="MESARIN M">MESARIN M</option>
+                    <option value="NITACHHROUN F">NITACHHROUN F</option>
+                    <option value="SATANBUNTIT M">SATANBUNTIT M</option>
+                    <option value="VANNALEN M">VANNALEN M</option>
+                    <option value="SREYKEOKEUN F">SREYKEOKEUN F</option>
+                    <option value="CHANSAYHAHOEURN M">CHANSAYHAHOEURN M</option>
+                    <option value="KRAVANNYOR M">KRAVANNYOR M</option>
+                    <option value="TOLATIM M">TOLATIM M</option>
+                    <option value="SOPHATS IENG M">SOPHATS IENG M</option>
+                    <option value="SREYVIKVON F">SREYVIKVON F</option>
+                    <option value="SOPHEAPHAL F">SOPHEAPHAL F</option>
+                    <option value="KINGVOEUN M">KINGVOEUN M</option>
+                    <option value="CHAMROEUNSONG M">CHAMROEUNSONG M</option>
+                    <option value="KHOUEN M">KHOUEN M</option>
+                    <option value="SIVSANN M">SIVSANN M</option>
+                    <option value="SREYROTHSANG F">SREYROTHSANG F</option>
+                    <option value="LYSARL M">LYSARL M</option>
+                    <option value="CHANDYSRIN F">CHANDYSRIN F</option>
+                    <option value="SREYLEAKSEMF F">SREYLEAKSEMF F</option>
+                    <option value="SOKKEANGYEANG F">SOKKEANGYEANG F</option>
+                    <option value="SREYMOMPO F">SREYMOMPO F</option>
+                    <option value="MESARIN M">MESARIN M</option>
+                    <option value="ROEURNROS M">ROEURNROS M</option>
+                    <option value="SAMNANGSIM M">SAMNANGSIM M</option>
+                    <option value="SOKNYNIM M">SOKNYNIM M</option>
+                    <option value="RANITREN F">RANITREN F</option>
+                    <option value="CHANTHYCHET F">CHANTHYCHET F</option>
+                    <option value="YAPHORN M">YAPHORN M</option>
+                    <option value="KUNTHEAYON F">KUNTHEAYON F</option>
+                    <option value="SOKYANGLAKK F">SOKYANGLAKK F</option>
+                    <option value="MARYSAO F">MARYSAO F</option>
+                    <option value="DARINHILT HAM M">DARINHILT HAM M</option>
+                </select>
             </div>
+
             <div class="form-group">
                 <label for="studentID">Student ID</label>
                 <input type="text" id="studentID" placeholder="e.g., C2025001">
@@ -59,7 +137,7 @@
             <div class="form-group"><label for="PL_T1">PL</label><input type="number" id="PL_T1" min="0" max="100" placeholder="Score"></div>
             <div class="form-group"><label for="Design">Design</label><input type="number" id="Design" min="0" max="100" placeholder="Score"></div>
 
-            <h2>Term 2 Scores (Max 100) </h2>
+            <h2>Term 2 Scores (Max 100)</h2>
             <div class="form-group"><label for="EngIT_T2">English for IT</label><input type="number" id="EngIT_T2" min="0" max="100" placeholder="Score"></div>
             <div class="form-group"><label for="GenEng_T2">General English</label><input type="number" id="GenEng_T2" min="0" max="100" placeholder="Score"></div>
             <div class="form-group"><label for="Algorithm">Algorithm</label><input type="number" id="Algorithm" min="0" max="100" placeholder="Score"></div>
@@ -81,55 +159,48 @@
                     <th>Analysis</th>
                 </tr>
             </thead>
-            <tbody>
-                </tbody>
+            <tbody></tbody>
         </table>
     </div>
-    <footer>
-        <p>© 2025 Student Analyzer. All Rights Reserved.</p>
-        <p>
-            <a href="index.html">Home</a> | 
-            <a href="reports.html">Reports</a> | 
-            <a href="contact.html">Contact</a>
-        </p>
-        <p class="social-icons">
-            <a href="#" title="Facebook">📘</a>
-            <a href="#" title="Twitter">🐦</a>
-            <a href="#" title="LinkedIn">💼</a>
-        </p>
-        <p>Made with ❤️ by the Student Analyzer Team</p>
-    </footer>
+
+    <!-- Footer -->
+  <footer class="text-center mt-5">
+    <hr>
+    <p>© 2025 Student Analyzer | Confidential Report</p>
+    <p>
+      <a href="index.html">Home</a> | 
+      <a href="reports.html">Reports</a> | 
+      <a href="contact.html">Contact</a>
+    </p>
+    <p class="social-icons">
+      <a href="#" title="Facebook">📘</a>
+      <a href="#" title="Twitter">🐦</a>
+      <a href="#" title="LinkedIn">💼</a>
+    </p>
+    <p>Made with ❤️ by the Student Analyzer Team</p>
+  </footer>
 
     <script>
         const students = [];
 
-        // Helper function to show non-blocking messages instead of alert()
         function showMessage(msg) {
             const box = document.getElementById('messageBox');
-            // Check if the message indicates an error or success to adjust background color
             if (msg.includes("🛑") || msg.includes("⚠️")) {
-                box.style.backgroundColor = '#f8d7da'; // Red
+                box.style.backgroundColor = '#f8d7da';
                 box.style.color = '#842029';
             } else {
-                box.style.backgroundColor = '#d1e7dd'; // Greenish
+                box.style.backgroundColor = '#d1e7dd';
                 box.style.color = '#0f5132';
             }
-            
             box.textContent = msg;
             box.classList.add('show');
-            setTimeout(() => {
-                box.classList.remove('show');
-            }, 3000);
+            setTimeout(() => { box.classList.remove('show'); }, 3000);
         }
 
         function addStudent() {
-            const name = document.getElementById("studentName").value.trim();
+            const name = document.getElementById("studentName").value;
             const id = document.getElementById("studentID").value.trim();
-
-            if (!name) { 
-                showMessage("🛑 Please enter the student's name."); 
-                return; 
-            }
+            if (!name) { showMessage("🛑 Please select the student's name."); return; }
 
             const subjects = [
                 { name: "BCU", t1: "BCU", t2: null },
@@ -142,236 +213,62 @@
                 { name: "Web Design", t1: null, t2: "WebDesign" }
             ];
 
-            const studentData = { 
-                name, 
-                id, 
-                subjects: [],
-                overallTotal: 0,
-                overallCount: 0,
-                t1Total: 0,
-                t1Count: 0,
-                t2Total: 0,
-                t2Count: 0,
-                lowestScore: 101, // Lowest possible score is 0, so 101 is a safe starting point
-                lowestSubject: "N/A"
-            };
+            const studentData = { name, id, subjects: [], overallTotal: 0, overallCount: 0, t1Total: 0, t1Count: 0, t2Total: 0, t2Count: 0, lowestScore: 101, lowestSubject: "N/A" };
 
             subjects.forEach(sub => {
                 const t1ScoreInput = document.getElementById(sub.t1)?.value;
                 const t2ScoreInput = document.getElementById(sub.t2)?.value;
-
-                // Use parseFloat and check for valid numbers
                 const t1Score = sub.t1 && t1ScoreInput !== "" ? parseFloat(t1ScoreInput) : null;
                 const t2Score = sub.t2 && t2ScoreInput !== "" ? parseFloat(t2ScoreInput) : null;
-                
+
+                const isValidT1 = t1Score !== null && !isNaN(t1Score) && t1Score >= 0 && t1Score <= 100;
+                const isValidT2 = t2Score !== null && !isNaN(t2Score) && t2Score >= 0 && t2Score <= 100;
+
+                if (sub.t1 && t1ScoreInput !== "" && !isValidT1) { showMessage(`🛑 Invalid score for ${sub.name} (Term 1)`); return; }
+                if (sub.t2 && t2ScoreInput !== "" && !isValidT2) { showMessage(`🛑 Invalid score for ${sub.name} (Term 2)`); return; }
+
                 let comment = "No Data";
                 let commentClass = "same"; 
 
-                // Input validation for scores (must be between 0 and 100)
-                const isValidT1 = t1Score !== null && !isNaN(t1Score) && t1Score >= 0 && t1Score <= 100;
-                const isValidT2 = t2Score !== null && !isNaN(t2Score) && t2Score >= 0 && t2Score <= 100;
-                
-                // If input was provided but was invalid, show an error and set score to null
-                if (sub.t1 && t1ScoreInput !== "" && !isValidT1) {
-                    showMessage(`🛑 Invalid score for ${sub.name} (Term 1). Must be 0-100.`);
-                    return; // Stop processing this student for clarity
-                }
-                if (sub.t2 && t2ScoreInput !== "" && !isValidT2) {
-                    showMessage(`🛑 Invalid score for ${sub.name} (Term 2). Must be 0-100.`);
-                    return; // Stop processing this student for clarity
-                }
-
-                // --- Subject-level Analysis ---
-
                 if (isValidT1 && isValidT2) {
-                    if (t2Score > t1Score) { 
-                        comment = `✅ Better (+${(t2Score - t1Score).toFixed(0)} points)`; 
-                        commentClass = "good"; 
-                    }
-                    else if (t2Score < t1Score) { 
-                        comment = `⚠️ Needs Improvement (-${(t1Score - t2Score).toFixed(0)} points)`; 
-                        commentClass = "needs"; 
-                    }
-                    else { 
-                        comment = "↔️ Same as Term 1"; 
-                        commentClass = "same"; 
-                    }
-                } else if (!isValidT1 && isValidT2) { 
-                    comment = "✨ New subject this term"; 
-                    commentClass = "new-subject"; 
-                } else if (isValidT1 && !isValidT2) { 
-                    comment = "Term 1 only"; 
-                    commentClass = "same"; 
-                } else if (!isValidT1 && !isValidT2) {
-                    comment = "Missing Data"; 
-                    commentClass = "same"; 
-                }
+                    comment = t2Score > t1Score ? `✅ Better (+${(t2Score - t1Score).toFixed(0)})` : t2Score < t1Score ? `⚠️ Needs Improvement (-${(t1Score - t2Score).toFixed(0)})` : "↔️ Same as Term 1";
+                    commentClass = t2Score !== t1Score ? t2Score > t1Score ? "good" : "needs" : "same";
+                } else if (!isValidT1 && isValidT2) { comment = "✨ New Subject"; commentClass = "good"; }
+                else if (isValidT1 && !isValidT2) { comment = "⏳ Waiting Term 2"; commentClass = "same"; }
 
-                // --- Overall & Term Calculation & Lowest Score Tracking ---
+                const avgScore = [t1Score, t2Score].filter(s => s !== null).reduce((a,b) => a+b,0) / [t1Score, t2Score].filter(s => s !== null).length || 0;
+                if (avgScore < studentData.lowestScore && avgScore > 0) { studentData.lowestScore = avgScore; studentData.lowestSubject = sub.name; }
 
-                if (isValidT1) {
-                    studentData.overallTotal += t1Score;
-                    studentData.overallCount++;
-                    studentData.t1Total += t1Score;
-                    studentData.t1Count++;
-                    if (t1Score < studentData.lowestScore) {
-                        studentData.lowestScore = t1Score;
-                        studentData.lowestSubject = `${sub.name} (Term 1)`;
-                    }
-                }
-
-                if (isValidT2) {
-                    studentData.overallTotal += t2Score;
-                    studentData.overallCount++;
-                    studentData.t2Total += t2Score;
-                    studentData.t2Count++;
-                    if (t2Score < studentData.lowestScore) {
-                        studentData.lowestScore = t2Score;
-                        studentData.lowestSubject = `${sub.name} (Term 2)`;
-                    }
-                }
-
-                studentData.subjects.push({ 
-                    ...sub, 
-                    t1Score: isValidT1 ? t1Score : null, 
-                    t2Score: isValidT2 ? t2Score : null, 
-                    comment, 
-                    commentClass 
-                });
+                studentData.subjects.push({ name: sub.name, t1Score, t2Score, comment, commentClass });
+                if (isValidT1) { studentData.t1Total += t1Score; studentData.t1Count++; }
+                if (isValidT2) { studentData.t2Total += t2Score; studentData.t2Count++; }
+                if (isValidT1 || isValidT2) { studentData.overallTotal += avgScore; studentData.overallCount++; }
             });
-
-            // --- Final Overall Calculations ---
-            studentData.overallAverage = studentData.overallCount > 0 
-                ? (studentData.overallTotal / studentData.overallCount) 
-                : 0;
-
-            studentData.t1Average = studentData.t1Count > 0 
-                ? (studentData.t1Total / studentData.t1Count) 
-                : 0;
-
-            studentData.t2Average = studentData.t2Count > 0 
-                ? (studentData.t2Total / studentData.t2Count) 
-                : 0;
-            
-            // --- Overall Status ---
-            
-            let overallComment;
-            let overallClass = "needs"; // Default to needs improvement
-
-            if (studentData.overallCount === 0) {
-                overallComment = "No scores entered to calculate overall performance.";
-                overallClass = "same";
-            } else {
-                if (studentData.overallAverage >= 90) {
-                    overallComment = `🏆 EXCELLENT! Overall average (${studentData.overallAverage.toFixed(2)}%) is truly exceptional. Your performance is succeeding fully!`;
-                    overallClass = "good";
-                } else if (studentData.overallAverage >= 75) {
-                    overallComment = `👍 VERY STRONG performance (${studentData.overallAverage.toFixed(2)}%). A great success! Aim to raise your lowest score in ${studentData.lowestSubject}.`;
-                    overallClass = "good";
-                } else {
-                    overallComment = `⚠️ Requires Focus: Overall average (${studentData.overallAverage.toFixed(2)}%) needs lifting. Immediate focus needed on ${studentData.lowestSubject}.`;
-                    overallClass = "needs";
-                }
-            }
-
-            studentData.overallComment = overallComment;
-            studentData.overallClass = overallClass;
-
 
             students.push(studentData);
-            renderTable();
-            document.getElementById("scoreForm").reset();
-            showMessage("✅ Student added and performance analyzed successfully!");
+            updateTable();
+            showMessage(`✅ Student ${name} added successfully!`);
         }
 
-        function renderTable() {
+        function updateTable() {
             const tbody = document.querySelector("#resultTable tbody");
-            tbody.innerHTML = ""; 
+            tbody.innerHTML = "";
 
-            const fragment = document.createDocumentFragment();
-
-            students.forEach(student => {
-                // 1. Render Subject Rows
-                student.subjects.forEach(sub => {
-                    const row = document.createElement('tr');
-                    // Ensure scores are displayed as "-" if null/invalid
-                    const t1Display = sub.t1Score !== null ? sub.t1Score.toFixed(0) : "-";
-                    const t2Display = sub.t2Score !== null ? sub.t2Score.toFixed(0) : "-";
-
-                    row.innerHTML = `
-                        <td>${student.name}</td>
-                        <td>${student.id || "-"}</td>
+            students.forEach(stu => {
+                stu.subjects.forEach(sub => {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td>${stu.name}</td>
+                        <td>${stu.id}</td>
                         <td>${sub.name}</td>
-                        <td style="text-align: center;">${t1Display}</td>
-                        <td style="text-align: center;">${t2Display}</td>
-                        <td class="${sub.commentClass}" style="text-align: left;">${sub.comment}</td>
+                        <td style="text-align:center">${sub.t1Score !== null ? sub.t1Score : "-"}</td>
+                        <td style="text-align:center">${sub.t2Score !== null ? sub.t2Score : "-"}</td>
+                        <td class="${sub.commentClass}">${sub.comment}</td>
                     `;
-                    fragment.appendChild(row);
+                    tbody.appendChild(tr);
                 });
-
-                // 2. Render Summary Row (Term Totals/Averages & Overall Status)
-                const summaryRow = document.createElement('tr');
-                summaryRow.classList.add('summary-row');
-
-                const t1MaxTotal = student.t1Count * 100;
-                const t2MaxTotal = student.t2Count * 100;
-                
-                summaryRow.innerHTML = `
-                    <td colspan="2" style="font-weight: 700; background: #e6f7ff; text-align: center;">
-                        <span style="display: block; font-size: 1.1em; color: #1e3c72;">Term 1 Summary</span>
-                        <span style="display: block;" class="summary-text">Total Score: ${student.t1Total.toFixed(0)} / ${t1MaxTotal}</span>
-                        <span style="display: block; font-size: 1.1em; font-weight: 800; color: #842029;">Average: ${student.t1Average.toFixed(2)}%</span>
-                    </td>
-                    <td colspan="2" style="font-weight: 700; background: #e6f7ff; text-align: center;">
-                        <span style="display: block; font-size: 1.1em; color: #1e3c72;">Term 2 Summary</span>
-                        <span style="display: block;" class="summary-text">Total Score: ${student.t2Total.toFixed(0)} / ${t2MaxTotal}</span>
-                        <span style="display: block; font-size: 1.1em; font-weight: 800; color: #842029;">Average: ${student.t2Average.toFixed(2)}%</span>
-                    </td>
-                    <td colspan="2" class="${student.overallClass}" style="font-weight: 700; text-align: left; background: ${student.overallClass === 'good' ? '#d1e7dd' : student.overallClass === 'needs' ? '#f8d7da' : '#fff3cd'} !important;">
-                        <span style="display: block; font-size: 1.2em; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 5px; margin-bottom: 5px; color: ${student.overallClass === 'good' ? '#0f5132' : student.overallClass === 'needs' ? '#842029' : '#664d03'};">
-                            Overall Avg: ${student.overallAverage.toFixed(2)}%
-                        </span>
-                        <span class="summary-text" style="font-weight: 600;">
-                            ${student.overallComment}
-                        </span>
-                    </td>
-                `;
-                fragment.appendChild(summaryRow);
-
-                // Add a separator row for better visual distinction between students
-                const separatorRow = document.createElement('tr');
-                separatorRow.style.height = '20px';
-                separatorRow.style.backgroundColor = '#f4f7f9';
-                separatorRow.innerHTML = `<td colspan="6" style="border: none; padding: 0;"></td>`;
-                fragment.appendChild(separatorRow);
             });
-            
-            tbody.appendChild(fragment); 
         }
-         // --- Save data to MySQL through PHP ---
-       fetch("http://localhost/student_analyzer/save_student.php", {
-// ... rest of the code
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(studentData)
-        })
-        .then(res => res.json())
-        .then(result => {
-        if (result.status === "success") {
-            showMessage("✅ Data stored in MySQL successfully!");
-        } else {
-            showMessage("⚠️ Failed to save: " + result.message);
-        }
-        })
-        .catch(err => {
-        console.error(err);
-        showMessage("🛑 Error connecting to the server!");
-        showMessage("✅ Student added and performance analyzed successfully!");
-
-        });
     </script>
-
 </body>
 </html>
